@@ -74,9 +74,9 @@ commands:
             testcontainers(.org) dependency ensures that ehrbase server
             and postgresql db are started before integration tests a run.
         steps:
-            - install-maven
             - run:
-                command:
+                command: |
+                    mvn --version
                     java --version
 
 
