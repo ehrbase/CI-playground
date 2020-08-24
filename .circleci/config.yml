@@ -146,8 +146,8 @@ executors:
                 POSTGRES_PASSWORD: postgres
 
     vm-ubuntu-1604:
-        working_directory: ~/projects
-        # working_directory: /mnt/ramdisk      # TODO: @wlad TEST THIS FOR POSSIBLE
+        # working_directory: ~/projects
+        working_directory: /mnt/ramdisk      # TODO: @wlad TEST THIS FOR POSSIBLE
         machine:                               #             SPEED IMPROVEMENT !!!
             # image: ubuntu-1604:201903-01
             image: ubuntu-1604:202007-01        # what's inside:
