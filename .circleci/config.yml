@@ -79,10 +79,9 @@ commands:
             - install-maven
             - run:
                 command: |
+                    ls -la
                     mvn --version
                     java --version
-                    ls -la
-                    cd ~/projects
                     mvn clean verify
 
 
