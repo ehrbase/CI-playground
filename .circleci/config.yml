@@ -70,7 +70,7 @@ commands:
     
     mvn-clean-verify:
         description: | 
-            Executest `mvn clean verify`
+            Executes `mvn clean verify`
             testcontainers(.org) dependency ensures that ehrbase server
             and postgresql db are started before integration tests a run.
         steps:
