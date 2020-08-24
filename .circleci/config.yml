@@ -74,12 +74,14 @@ commands:
             testcontainers(.org) dependency ensures that ehrbase server
             and postgresql db are started before integration tests a run.
         steps:
-            - openjdk-install/openjdk:
-                version: 11
+            # - openjdk-install/openjdk:
+            #     version: 11
             - run:
                 command: |
                     mvn --version
                     java --version
+                    ls -la
+                    cd ~/projects
                     mvn clean verify
 
 
@@ -130,4 +132,8 @@ executors:
         working_directory: ~/projects
         # working_directory: /mnt/ramdisk      # TODO: @wlad TEST THIS FOR POSSIBLE
         machine:                               #             SPEED IMPROVEMENT !!!
-            image: ubuntu-1604:201903-01
+            # image: ubuntu-1604:201903-01
+            image: ubuntu-1604:202007-01        # what's inside:
+                                                # Ubuntu 16.04
+                                                # Docker v19.03.12
+                                                # Docker Compose v1.26.1
