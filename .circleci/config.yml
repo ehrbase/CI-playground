@@ -40,9 +40,9 @@ jobs:
         executor: vm-ubuntu-1604
         steps:
         - checkout
-        # - cache-out-sdk-m2-dependencies
+        - cache-out-fhirbridge-m2-dependencies
         - mvn-clean-verify
-        # - cache-in-sdk-m2-dependencies
+        - cache-in-fhirbridge-m2-dependencies
         # - collect-sdk-unittest-results
         # - save-skd-test-results
         # - save-sdk-workspace
@@ -83,6 +83,23 @@ commands:
                     mvn --version
                     java --version
                     mvn clean verify
+
+
+    cache-out-fhirbridge-m2-dependencies:
+        steps:
+          - run:
+              name: Generate Cache Checksum for FHIR-bridge Dependencies
+              command: find . -name 'pom.xml' | sort | xargs cat > /tmp/fhirbridge_maven_cache_seed
+          - restore_cache:
+              key: fhirbridge-
+
+
+    cache-in-fhirbridge-m2-dependencies:
+        steps:
+          - save_cache:
+              key: fhirbridge-{{ checksum "/tmp/fhirbridge_maven_cache_seed" }}
+              paths:
+              - ~/.m2
 
 
 
