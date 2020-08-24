@@ -80,6 +80,7 @@ commands:
                 command: |
                     mvn --version
                     java --version
+                    mvn clean verify
 
 
 
