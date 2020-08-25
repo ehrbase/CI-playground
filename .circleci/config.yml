@@ -10,7 +10,7 @@ workflows:
   # WORKFLOW 1/? Build & Test FHIR-bridge
   build_and_test_fhirbridge:
     jobs:
-      - build-and-test-fhirbridge:
+      - build-and-test-fhirbridge
         #   filters:
         #     branches:
         #       ignore:
