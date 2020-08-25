@@ -7,16 +7,16 @@ version: 2.1
 
 workflows:
 
-# WORKFLOW 1/? Build & Test FHIR-bridge
-  build_and_test_fhirbridge:
-    jobs:
-      - build-and-test-fhirbridge:
-          filters:
-            branches:
-              ignore:
-                - master
-                - develop
-                - release
+    # WORKFLOW 1/? Build & Test FHIR-bridge
+    build_and_test_fhirbridge:
+        jobs:
+            - build-and-test-fhirbridge:
+                filters:
+                    branches:
+                    ignore:
+                        - master
+                        - develop
+                        - release
 
 
 
@@ -46,6 +46,7 @@ jobs:
             # - collect-fhirbride-unittest-results
             - collect-fhirbridge-integrationtest-results
             - save-fhirbridge-test-results
+            - save-jacoco-coverage-report
             # - save-fhirbride-workspace
 
 
