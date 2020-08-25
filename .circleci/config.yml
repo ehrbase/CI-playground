@@ -11,12 +11,12 @@ workflows:
   build_and_test_fhirbridge:
     jobs:
       - build-and-test-fhirbridge:
-          filters:
-            branches:
-              ignore:
-                - master
-                - develop
-                - release
+        #   filters:
+        #     branches:
+        #       ignore:
+        #         - master
+        #         - develop
+        #         - release
 
 
 
@@ -36,7 +36,7 @@ jobs:
     
     
     build-and-test-fhirbridge:
-        description: Build and unit test the SDK.
+        description: Build and test FHIR-bridge, analyze code, upload results to sonarcloud.io
         executor: vm-ubuntu-1604
         steps:
             - checkout
@@ -47,7 +47,8 @@ jobs:
             - collect-fhirbridge-integrationtest-results
             - save-fhirbridge-test-results
             - save-jacoco-coverage-report
-            # - save-fhirbride-workspace
+            - sonarcloud/scan:
+                cache_version: 1
 
 
 
