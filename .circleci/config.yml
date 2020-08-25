@@ -43,10 +43,10 @@ jobs:
             - cache-out-fhirbridge-m2-dependencies
             - mvn-clean-verify
             - cache-in-fhirbridge-m2-dependencies
-            # - collect-sdk-unittest-results
-            # - save-skd-test-results
-            # - save-sdk-workspace
-
+            # - collect-fhirbride-unittest-results
+            - collect-fhirbridge-integrationtest-results
+            - save-fhirbridge-test-results
+            # - save-fhirbride-workspace
 
 
 
@@ -84,19 +84,77 @@ commands:
 
     cache-out-fhirbridge-m2-dependencies:
         steps:
-          - run:
-              name: Generate Cache Checksum for FHIR-bridge Dependencies
-              command: find . -name 'pom.xml' | sort | xargs cat > /tmp/fhirbridge_maven_cache_seed
-          - restore_cache:
-              key: fhirbridge-
+            - run:
+                name: Generate Cache Checksum for FHIR-bridge Dependencies
+                command: find . -name 'pom.xml' | sort | xargs cat > /tmp/fhirbridge_maven_cache_seed
+            - restore_cache:
+                key: fhirbridge-
 
 
     cache-in-fhirbridge-m2-dependencies:
         steps:
-          - save_cache:
-              key: fhirbridge-{{ checksum "/tmp/fhirbridge_maven_cache_seed" }}
-              paths:
-              - ~/.m2
+            - save_cache:
+                key: fhirbridge-{{ checksum "/tmp/fhirbridge_maven_cache_seed" }}
+                paths:
+                    - ~/.m2
+
+
+    # collect-fhirbridge-unittest-results:
+    #     steps:
+    #         - run:
+    #             name: Save unit test results
+    #             command: |
+    #                 mkdir -p ~/test-results/unit-tests/
+    #                 find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/unit-tests/ \;
+    #                 find . -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} ~/test-results/unit-tests/ \;
+    #             when: always
+
+
+    collect-fhirbridge-integrationtest-results:
+        steps:
+            - run:
+                name: Save integration test results
+                command: |
+                    mkdir -p ~/test-results/integration-tests/
+                    find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/test-results/integration-tests/ \;
+                    find . -type f -regex ".*/target/failsafe-reports/.*txt" -exec cp {} ~/test-results/integration-tests/ \;
+                when: always
+
+
+    save-fhirbridge-test-results:
+        steps:
+            - store_test_results:
+                path: ~/test-results
+            - store_artifacts:
+                path: ~/test-results
+
+
+    save-jacoco-coverage-report:
+        description: |
+            Uploads Jacoco coverage report as circleci artifact
+        steps:
+            - store_artifacts:
+                path: target/site/jacoco
+
+
+    save-fhirbridge-workspace:
+        steps:
+            - persist_to_workspace:
+                root: /home/circleci
+                paths:
+                    - .m2
+                    - projects
+    
+    
+    restore-fhirbridge-workspace:
+        description: |
+            Restores any file/folder that was previously persisted w/ 'persist_to_workspace'.
+            NOTE: best practise is to persist files or folders very selectively.
+                  Do not persist root or the whole workspace at one, otherwise concurrent jobs
+                  may fail to restore that stuff.
+        steps:
+            - attach_workspace:
+                at: /home/circleci/
 
 
 
@@ -127,6 +185,7 @@ orbs:
     openjdk-install: cloudesire/openjdk-install@1.2.3
     sonarcloud: sonarsource/sonarcloud@1.0.2
   
+
 executors:
     docker-python3-java11:
         working_directory: ~/projects
@@ -144,8 +203,7 @@ executors:
 
     vm-ubuntu-1604:
         working_directory: ~/projects
-        # working_directory: /mnt/ramdisk      # TODO: @wlad TEST THIS FOR POSSIBLE
-        machine:                               #             SPEED IMPROVEMENT !!!
+        machine:
             # image: ubuntu-1604:201903-01
             image: ubuntu-1604:202007-01        # what's inside:
                                                 # Ubuntu 16.04
