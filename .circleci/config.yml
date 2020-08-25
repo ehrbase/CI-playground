@@ -7,16 +7,16 @@ version: 2.1
 
 workflows:
 
-    # WORKFLOW 1/? Build & Test FHIR-bridge
-    build_and_test_fhirbridge:
-        jobs:
-            - build-and-test-fhirbridge:
-                filters:
-                    branches:
-                    ignore:
-                        - master
-                        - develop
-                        - release
+  # WORKFLOW 1/? Build & Test FHIR-bridge
+  build_and_test_fhirbridge:
+    jobs:
+      - build-and-test-fhirbridge:
+          filters:
+            branches:
+              ignore:
+                - master
+                - develop
+                - release
 
 
 
@@ -85,77 +85,77 @@ commands:
 
     cache-out-fhirbridge-m2-dependencies:
         steps:
-            - run:
-                name: Generate Cache Checksum for FHIR-bridge Dependencies
-                command: find . -name 'pom.xml' | sort | xargs cat > /tmp/fhirbridge_maven_cache_seed
-            - restore_cache:
-                key: fhirbridge-
+          - run:
+              name: Generate Cache Checksum for FHIR-bridge Dependencies
+              command: find . -name 'pom.xml' | sort | xargs cat > /tmp/fhirbridge_maven_cache_seed
+          - restore_cache:
+              key: fhirbridge-
 
 
     cache-in-fhirbridge-m2-dependencies:
         steps:
-            - save_cache:
-                key: fhirbridge-{{ checksum "/tmp/fhirbridge_maven_cache_seed" }}
-                paths:
-                    - ~/.m2
+          - save_cache:
+              key: fhirbridge-{{ checksum "/tmp/fhirbridge_maven_cache_seed" }}
+              paths:
+              - ~/.m2
 
 
     # collect-fhirbridge-unittest-results:
     #     steps:
-    #         - run:
-    #             name: Save unit test results
-    #             command: |
-    #                 mkdir -p ~/test-results/unit-tests/
-    #                 find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/unit-tests/ \;
-    #                 find . -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} ~/test-results/unit-tests/ \;
-    #             when: always
+    #       - run:
+    #           name: Save unit test results
+    #           command: |
+    #             mkdir -p ~/test-results/unit-tests/
+    #             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/unit-tests/ \;
+    #             find . -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} ~/test-results/unit-tests/ \;
+    #           when: always
 
 
     collect-fhirbridge-integrationtest-results:
         steps:
-            - run:
-                name: Save integration test results
-                command: |
-                    mkdir -p ~/test-results/integration-tests/
-                    find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/test-results/integration-tests/ \;
-                    find . -type f -regex ".*/target/failsafe-reports/.*txt" -exec cp {} ~/test-results/integration-tests/ \;
-                when: always
+          - run:
+              name: Save integration test results
+              command: |
+                mkdir -p ~/test-results/integration-tests/
+                find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/test-results/integration-tests/ \;
+                find . -type f -regex ".*/target/failsafe-reports/.*txt" -exec cp {} ~/test-results/integration-tests/ \;
+              when: always
 
 
     save-fhirbridge-test-results:
         steps:
-            - store_test_results:
-                path: ~/test-results
-            - store_artifacts:
-                path: ~/test-results
+          - store_test_results:
+              path: ~/test-results
+          - store_artifacts:
+              path: ~/test-results
 
 
     save-jacoco-coverage-report:
         description: |
-            Uploads Jacoco coverage report as circleci artifact
+          Uploads Jacoco coverage report as circleci artifact
         steps:
-            - store_artifacts:
-                path: target/site/jacoco
+          - store_artifacts:
+              path: target/site/jacoco
 
 
     save-fhirbridge-workspace:
         steps:
-            - persist_to_workspace:
-                root: /home/circleci
-                paths:
-                    - .m2
-                    - projects
+          - persist_to_workspace:
+              root: /home/circleci
+              paths:
+                - .m2
+                - projects
     
     
     restore-fhirbridge-workspace:
         description: |
-            Restores any file/folder that was previously persisted w/ 'persist_to_workspace'.
-            NOTE: best practise is to persist files or folders very selectively.
-                  Do not persist root or the whole workspace at one, otherwise concurrent jobs
-                  may fail to restore that stuff.
+          Restores any file / folder that was previously persisted w/ 'persist_to_workspace'.
+          NOTE: best practise is to persist files or folders very selectively.
+                Do not persist root or the whole workspace at one, otherwise concurrent jobs
+                may fail to restore that stuff.
         steps:
-            - attach_workspace:
-                at: /home/circleci/
+          - attach_workspace:
+              at: /home/circleci/
 
 
 
