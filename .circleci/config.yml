@@ -485,15 +485,19 @@ jobs:
   test-ehrbase-and-sdk-changes:
     machine:
       image: circleci/classic:201808-01
+      working_directory: ~/projects
     environment:
       PIPELINE_ID: << pipeline.id >>
-      BRANCH_NAME: pipeline.git.branch
+      BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - configure-python-version
       - run:
           command: |
             echo $PIPELINE_ID
             echo $BRANCH_NAME
+            python --version
+            pip --version
+            java --version
 
   build-artifacts:
     machine:
