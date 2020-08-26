@@ -483,12 +483,13 @@ jobs:
 
 
   test-ehrbase-and-sdk-changes:
-    machine:
-      image: circleci/classic:201808-01
-    working_directory: ~/projects
-    environment:
-      PIPELINE_ID: << pipeline.id >>
-      BRANCH_NAME: << pipeline.git.branch >>
+    executor: machine-ubuntu-1604
+    # machine:
+    #   image: circleci/classic:201808-01
+    # working_directory: ~/projects
+    # environment:
+    #   PIPELINE_ID: << pipeline.id >>
+    #   BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - configure-python-version
       - run:
@@ -1434,6 +1435,22 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+
+  machine-ubuntu-1604:
+    description: |
+      Ubuntu 1604 VM
+      - Python versions 2/3
+      - Pyenv (to switch between python versions)
+      - Pip
+      - Java 8 and Maven
+      - Docker 18.06
+      - Docker-Compose 1.22.0
+    working_directory: ~/projects
+    environment:
+      PIPELINE_ID: << pipeline.id >>
+      BRANCH_NAME: << pipeline.git.branch >>
+    machine:
+      image: circleci/classic:201808-01
 
 
 
