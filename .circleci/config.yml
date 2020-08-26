@@ -486,16 +486,23 @@ jobs:
     executor: machine-ubuntu-1604
     steps:
       - configure-python-version
-      - checkout
+      # - checkout
+      - configure-git-for-ci-bot
       - run:
           command: |
             echo $PIPELINE_ID
             echo $BRANCH_NAME
       - run:
           command: |
+            git clone git@github.com:ehrbase/ehrbase.git
             git clone git@github.com:ehrbase/openEHR_SDK.git
-            cd openEHR_SDK
+            ls -la
+            cd ~/projects/ehrbase
             git checkout $BRANCH_NAME
+            git branch
+            cd ~/projects/openEHR_SDK
+            git checkout $BRANCH_NAME
+            git branch
 
 
   build-artifacts:
@@ -920,6 +927,20 @@ commands:
   #     88,   "8b,   ,aa  aa    ]8I    88,          88  88       88   88     88          88,    ,88
   #     "Y888  `"Ybbd8"'  `"YbbdP"'    "Y888        88  88       88   88     88          `"8bbdP"Y8
   #
+
+  configure-git-for-ci-bot:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - 3e:42:46:e1:9e:40:4d:ae:33:ab:db:0a:95:24:d2:99
+      - run:
+          name: Configure GIT
+          command: |
+            git config --global user.email "ci-bot@ehrbase.org"
+            git config --global user.name "ci-bot"
+            # git config --global push.followTags true
+            git remote -v
+
   install-java-11:
     description: Install Zulu Java 11
     steps:
