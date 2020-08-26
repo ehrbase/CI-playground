@@ -490,15 +490,16 @@ jobs:
       - configure-git-for-ci-bot
       - run:
           command: |
-            echo $PIPELINE_ID
             echo $BRANCH_NAME
       - run:
+          name: CLONE SDK REPO AND CHECKOUT $BRANCH_NAME
           command: |
             git clone git@github.com:ehrbase/openEHR_SDK.git
-            ls -la
             cd ~/projects/openEHR_SDK
             git checkout $BRANCH_NAME
-            git branch
+      - run: pwd
+      - run: ls -la
+
 
 
   build-artifacts:
