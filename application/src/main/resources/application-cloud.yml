@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ehrbase
+    username: ehrbase
+    password: ehrbase
+    hikari:
+      maximum-pool-size: 50
+      max-lifetime: 1800000
+      minimum-idle: 10
+
+security:
+  authType: NONE
+
+
+server:
+  port: 8080
+  # Optional custom server nodename
+  # nodename: 'local.test.org'
+  aql:
+    # set to true by default (comment out to enable jsquery)
+    use-jsquery: false
+  servlet:
+    context-path: /ehrbase
+
+system:
+  type: LOCAL
+
