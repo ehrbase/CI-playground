@@ -490,6 +490,7 @@ jobs:
       # - configure-git-for-ci-bot
       - install-java-11
       - run: mvn --version
+      - run: python --version
       - setup-database
       - run:
           name: CLONE SDK REPO AND CHECKOUT $BRANCH_NAME
@@ -506,7 +507,7 @@ jobs:
             SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo $SDK_VERSION > ~/projects/SDK_VERSION
             cat ~/projects/SDK_VERSION
-            mvn clean install -DskipTests -Dmaven.javadoc.skip=true
+            mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip
       
       # - force-ehrbase-build-to-use-local-sdk-version
       - build-and-test-ehrbase
@@ -1054,7 +1055,7 @@ commands:
           name: Install xmlstarlet to handle XML file from CLI
           command: |
             sudo killall -9 apt-get || true
-            sudo apt -y update && sudo apt -y install xmlstarlet=1.6.1-2
+            sudo apt -y update && sudo apt -y install xmlstarlet
 
 
   configure-python-version:
