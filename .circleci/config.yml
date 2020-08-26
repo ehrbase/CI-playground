@@ -49,6 +49,7 @@ workflows:
               ignore:
                 - release
                 - master
+                - sync
 
       - run-unit-tests:
           context: org-global
@@ -57,6 +58,7 @@ workflows:
               ignore:
                 - release
                 - master
+                - sync
 
       - run-SDK-integration-tests:
           context: org-global
@@ -67,6 +69,7 @@ workflows:
               ignore:
                 - release
                 - master
+                - sync
 
       # - COMPOSITION-tests-1:
       #     context: org-global
@@ -482,12 +485,15 @@ jobs:
   test-ehrbase-and-sdk-changes:
     machine:
       image: circleci/classic:201808-01
+    environment:
+      PIPELINE_ID: << pipeline.id >>
+      BRANCH_NAME: pipeline.git.branch
     steps:
       - configure-python-version
       - run:
           command: |
-            - echo "pipeline ID: << pipeline.id >>"
-            - echo "git branch: << pipeline.git.branch >>"
+            - echo $PIPELINE_ID
+            - echo $BRANCH_NAME
 
   build-artifacts:
     machine:
