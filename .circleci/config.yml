@@ -495,7 +495,7 @@ jobs:
           command: |
             git clone git@github.com:ehrbase/openEHR_SDK.git
             cd openEHR_SDK
-            git check $BRANCH_NAME
+            git checkout $BRANCH_NAME
 
 
   build-artifacts:
