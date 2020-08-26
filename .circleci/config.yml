@@ -490,7 +490,9 @@ jobs:
       # - configure-git-for-ci-bot
       - install-java-11
       - run: mvn --version
-      - run: python --version
+      - run: python3 --version
+      - run: pip --version
+      - run: pip3 --version
       - setup-database
       - run:
           name: CLONE SDK REPO AND CHECKOUT $BRANCH_NAME
@@ -957,7 +959,7 @@ commands:
           name: Maven build EHRbase
           command: |
             # cd ~/projects
-            mvn package dependency:go-offline -Dmaven.javadoc.skip=true -DskipTests
+            mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip
 
 
 
