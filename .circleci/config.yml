@@ -485,8 +485,8 @@ jobs:
   test-ehrbase-and-sdk-changes:
     executor: machine-ubuntu-1604
     steps:
+      - checkout
       - configure-python-version
-      # - checkout
       - configure-git-for-ci-bot
       - run:
           command: |
@@ -494,12 +494,8 @@ jobs:
             echo $BRANCH_NAME
       - run:
           command: |
-            git clone git@github.com:ehrbase/ehrbase.git
             git clone git@github.com:ehrbase/openEHR_SDK.git
             ls -la
-            cd ~/projects/ehrbase
-            git checkout $BRANCH_NAME
-            git branch
             cd ~/projects/openEHR_SDK
             git checkout $BRANCH_NAME
             git branch
