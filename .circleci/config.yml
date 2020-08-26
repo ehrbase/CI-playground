@@ -486,7 +486,7 @@ jobs:
     executor: machine-ubuntu-1604
     steps:
       - checkout
-      - configure-python-version
+      # - configure-python-version
       # - configure-git-for-ci-bot
       - install-java-11
       - run: mvn --version
@@ -506,12 +506,7 @@ jobs:
             SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo $SDK_VERSION > ~/projects/SDK_VERSION
             cat ~/projects/SDK_VERSION
-            mvn clean install dependency:go-offline -Dmaven.javadoc.skip=true -DskipTests
-      - run:
-          name: CHECK $SDK_VERSION ENV EXISTS
-          command: |
-            cat SDK_VERSION
-            echo $SDK_VERSION
+            mvn clean install -DskipTests -Dmaven.javadoc.skip=true
       
       # - force-ehrbase-build-to-use-local-sdk-version
       - build-and-test-ehrbase
