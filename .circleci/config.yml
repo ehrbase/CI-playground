@@ -484,23 +484,18 @@ jobs:
 
   test-ehrbase-and-sdk-changes:
     executor: machine-ubuntu-1604
-    # machine:
-    #   image: circleci/classic:201808-01
-    # working_directory: ~/projects
-    # environment:
-    #   PIPELINE_ID: << pipeline.id >>
-    #   BRANCH_NAME: << pipeline.git.branch >>
     steps:
       - configure-python-version
+      - checkout
       - run:
           command: |
             echo $PIPELINE_ID
             echo $BRANCH_NAME
-            python --version
-            pip --version
-            java -version
-            docker --version
-            docker-compose --version
+      - run:
+          command: |
+            git clone git@github.com:ehrbase/openEHR_SDK.git
+            cd openEHR_SDK
+            git check $BRANCH_NAME
 
 
   build-artifacts:
