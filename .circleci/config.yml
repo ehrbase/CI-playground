@@ -488,14 +488,13 @@ jobs:
       - checkout
       - configure-python-version
       # - configure-git-for-ci-bot
-      # - install-java-11
-      - openjdk-install/openjdk:
-          version: 11
+      - install-java-11
       - run: mvn --version
       - setup-database
       - run:
           name: CLONE SDK REPO AND CHECKOUT $BRANCH_NAME
           command: |
+            echo $CIRCLE_BRANCH
             echo BRANCH NAME TO CHECKOUT: $BRANCH_NAME
             git clone git@github.com:ehrbase/openEHR_SDK.git
             cd ~/projects/openEHR_SDK
