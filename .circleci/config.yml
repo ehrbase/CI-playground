@@ -49,7 +49,7 @@ workflows:
               ignore:
                 - release
                 - master
-                - sync
+                - /sync\/.*/
 
       - run-unit-tests:
           context: org-global
@@ -58,7 +58,7 @@ workflows:
               ignore:
                 - release
                 - master
-                - sync
+                - /sync\/.*/
 
       - run-SDK-integration-tests:
           context: org-global
@@ -69,7 +69,7 @@ workflows:
               ignore:
                 - release
                 - master
-                - sync
+                - /sync\/.*/
 
       # - COMPOSITION-tests-1:
       #     context: org-global
@@ -492,8 +492,8 @@ jobs:
       - configure-python-version
       - run:
           command: |
-            - echo $PIPELINE_ID
-            - echo $BRANCH_NAME
+            echo $PIPELINE_ID
+            echo $BRANCH_NAME
 
   build-artifacts:
     machine:
