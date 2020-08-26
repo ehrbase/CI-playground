@@ -497,7 +497,9 @@ jobs:
             echo $BRANCH_NAME
             python --version
             pip --version
-            java --version
+            java -version
+            docker --version
+            docker-compose --version
 
 
   build-artifacts:
