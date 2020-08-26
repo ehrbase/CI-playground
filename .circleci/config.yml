@@ -487,37 +487,39 @@ jobs:
     steps:
       - checkout
       - configure-python-version
-      - configure-git-for-ci-bot
-      - run:
-          command: |
-            echo $BRANCH_NAME
+      # - configure-git-for-ci-bot
+      # - install-java-11
+      - openjdk-install/openjdk:
+          version: 11
+      - run: mvn --version
+      - setup-database
       - run:
           name: CLONE SDK REPO AND CHECKOUT $BRANCH_NAME
           command: |
+            echo BRANCH NAME TO CHECKOUT: $BRANCH_NAME
             git clone git@github.com:ehrbase/openEHR_SDK.git
             cd ~/projects/openEHR_SDK
             git checkout $BRANCH_NAME
-      - run: pwd
-      - run: ls -la
-      - install-java-11
-      - run: mvn --version
-      # - run:
-      #     name: INSTALL MAVEN
-      #     command: |
-      #       [ -f /usr/bin/mvn ] && echo "Maven is already installed." || sudo apt install maven -y
-      # - run:
-      #     name: WRITE SDK VERSION TO FILE
-      #     command: |
-      #       cd ~/projects/openEHR_SDK
-      #       SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
-      #       echo $SDK_VERSION > SDK_VERSION
-      #       cat SDK_VERSION
       - run:
           name: INSTALL SDK
           command: |
             cd ~/projects/openEHR_SDK
-            mvn clean install
+            SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+            echo $SDK_VERSION > ~/projects/SDK_VERSION
+            cat ~/projects/SDK_VERSION
+            mvn clean install dependency:go-offline -Dmaven.javadoc.skip=true -DskipTests
+      - run:
+          name: CHECK $SDK_VERSION ENV EXISTS
+          command: |
+            cat SDK_VERSION
+            echo $SDK_VERSION
+      
+      # - force-ehrbase-build-to-use-local-sdk-version
+      - build-and-test-ehrbase
+      - start-ehrbase-and-run-all-sdk-tests
 
+            
+ 
 
 
   build-artifacts:
@@ -933,6 +935,39 @@ commands:
           path: ~/sdk-test-results
 
 
+
+
+
+  # ///////////////////////////////////////////////////////////////////////////
+  # /// EHRBASE COMMANDS                                                    ///
+  # ///////////////////////////////////////////////////////////////////////////
+
+  force-ehrbase-build-to-use-local-sdk-version:
+    steps:
+      - install-xml-cli-tool
+      - run:
+          name: Adjust SDK version number in EHRbase's pom
+          command: |
+            SDK_VERSION=$(cat ~/projects/SDK_VERSION)
+            echo $SDK_VERSION
+            # cd ~/projects
+            xmlstarlet edit --inplace -N my=http://maven.apache.org/POM/4.0.0 -u my:project/my:version -v $SDK_VERSION pom.xml
+
+            
+  build-and-test-ehrbase:
+    steps:
+      # - install-maven
+      - force-ehrbase-build-to-use-local-sdk-version
+      - run:
+          name: Maven build EHRbase
+          command: |
+            # cd ~/projects
+            mvn package dependency:go-offline -Dmaven.javadoc.skip=true -DskipTests
+
+
+
+
+
   #                                                 88                 ad88
   #     ,d                             ,d           ""                d8"
   #     88                             88                             88
@@ -975,6 +1010,8 @@ commands:
       - run: 
           name: Install Maven tool
           command: |
+            sudo killall -9 apt-get || true
+            sudo apt -y update
             [ -f /usr/bin/mvn ] && echo "Maven is already installed." || sudo apt install maven -y
   
   install-and-configure-keycloak:
@@ -1015,6 +1052,16 @@ commands:
                 echo "... waiting for keycloak ...";
             done
             echo "KEYCLOAK READY"
+  
+
+  install-xml-cli-tool:
+    steps:
+      - run:
+          name: Install xmlstarlet to handle XML file from CLI
+          command: |
+            sudo killall -9 apt-get || true
+            sudo apt -y update && sudo apt -y install xmlstarlet=1.6.1-2
+
 
   configure-python-version:
     description: Configure Python version to 3.7.0
@@ -1039,9 +1086,12 @@ commands:
       - run:
           name: Setup database
           command: |
-            docker run --name ehrdb -e POSTGRES_USER=$POSTGRES_USER \
-            -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -d \
-            -p 5432:5432 ehrbaseorg/ehrbase-database-docker
+            docker run  -d --name ehrdb \
+                        -e POSTGRES_USER=$POSTGRES_USER \
+                        -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -d \
+                        -e DISABLE_SECURITY=true \
+                        -p 5432:5432 ehrbaseorg/ehrbase-database-docker:11.5
+
 
   setup-file-repo:
     description: Setup file repo
