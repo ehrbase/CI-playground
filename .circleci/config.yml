@@ -499,6 +499,24 @@ jobs:
             git checkout $BRANCH_NAME
       - run: pwd
       - run: ls -la
+      - install-java-11
+      - run: mvn --version
+      - run:
+          name: INSTALL MAVEN
+          command: |
+            [ -f /usr/bin/mvn ] && echo "Maven is already installed." || sudo apt install maven -y
+      # - run:
+      #     name: WRITE SDK VERSION TO FILE
+      #     command: |
+      #       cd ~/projects/openEHR_SDK
+      #       SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+      #       echo $SDK_VERSION > SDK_VERSION
+      #       cat SDK_VERSION
+      - run:
+          name: INSTALL SDK
+          command: |
+            cd ~/projects/openEHR_SDK
+            mvn clean install
 
 
 
@@ -1463,7 +1481,8 @@ executors:
       PIPELINE_ID: << pipeline.id >>
       BRANCH_NAME: << pipeline.git.branch >>
     machine:
-      image: circleci/classic:201808-01
+      # image: circleci/classic:201808-01
+      image: ubuntu-1604:201903-01
 
 
 
