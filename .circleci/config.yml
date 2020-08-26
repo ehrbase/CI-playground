@@ -485,7 +485,7 @@ jobs:
   test-ehrbase-and-sdk-changes:
     machine:
       image: circleci/classic:201808-01
-      working_directory: ~/projects
+    working_directory: ~/projects
     environment:
       PIPELINE_ID: << pipeline.id >>
       BRANCH_NAME: << pipeline.git.branch >>
@@ -498,6 +498,7 @@ jobs:
             python --version
             pip --version
             java --version
+
 
   build-artifacts:
     machine:
