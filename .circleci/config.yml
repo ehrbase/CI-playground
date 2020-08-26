@@ -501,10 +501,10 @@ jobs:
       - run: ls -la
       - install-java-11
       - run: mvn --version
-      - run:
-          name: INSTALL MAVEN
-          command: |
-            [ -f /usr/bin/mvn ] && echo "Maven is already installed." || sudo apt install maven -y
+      # - run:
+      #     name: INSTALL MAVEN
+      #     command: |
+      #       [ -f /usr/bin/mvn ] && echo "Maven is already installed." || sudo apt install maven -y
       # - run:
       #     name: WRITE SDK VERSION TO FILE
       #     command: |
