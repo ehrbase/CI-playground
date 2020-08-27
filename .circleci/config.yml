@@ -891,7 +891,7 @@ commands:
         type: string
     steps:
       # - cache-out-python-requirements
-      - install-python-requirements
+      - install-python3-requirements
       - run: jps
       - run:
           name: Wait until EHRbase server is ready
@@ -1351,6 +1351,15 @@ commands:
           command: |
             python -c "import site; print(site.getsitepackages())"
             pip install -r ~/project/tests/requirements.txt
+
+  install-python3-requirements:
+    description: Install Python requirements
+    steps:
+      - run:
+          name: Install Python requirements
+          command: |
+            python -c "import site; print(site.getsitepackages())"
+            pip install -r ~/projectstests/requirements.txt
 
   setup-database:
     description: Setup ehrbase database
