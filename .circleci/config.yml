@@ -493,8 +493,11 @@ workflows:
           requires:
             - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
-      # - run robot integration tests - ehrbase - aql only
-      # - run robot integration tests - ehrbase - all except aql
+      - dCOMPOSITION-tests-1:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
 
 
 
@@ -615,6 +618,16 @@ jobs:
       - collect-sdk-integrationtest-results
       - save-skd-test-results
 
+  dCOMPOSITION-tests-1:
+    executor: docker-py3-java11-postgres
+    steps:
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
+      - run-robot-tests-in-docker:
+          include-tags: "compositionANDjson1"
+          test-suite-path: "COMPOSITION_TESTS"
+          test-suite-name: "COMPOSITION_1"
+  
   COMPOSITION-tests-1:
     machine:
       image: ubuntu-1604:201903-01
@@ -818,6 +831,7 @@ commands:
       - store_artifacts:
           path: ~/project/tests/results/
 
+
   run-robot-tests-with-oauth:
     description: Run selected integration tests w/ active Keycloak OAuth2 authentication
     parameters:
@@ -860,6 +874,72 @@ commands:
           path: ~/project/tests/results/
       - store_artifacts:
           path: ~/project/tests/results/
+
+
+  # USE THIS COMMAND W/ DOCKER EXECUTOR ONLY!!! 
+  run-robot-tests-in-docker:
+    description: Run integration tests written in Robot Framework
+    parameters:
+      include-tags:
+        description: Which tests to inclue by TAGs (Robot syntax applies!)
+        type: string
+      test-suite-path:
+        description: Target test-suite given by it's folder name e.g. COMPOSITION_TESTS
+        type: string
+      test-suite-name:
+        description: Titel of generated Robot Log/Report.html
+        type: string
+    steps:
+      # - cache-out-python-requirements
+      - install-python-requirements
+      - run: jps
+      - run:
+          name: Wait until EHRbase server is ready
+          command: |
+            grep -m 1 "Started EhrBase in" <(tail -f log)
+      - run:
+          name: EXECUTE ROBOT COMMAND
+          no_output_timeout: 30m
+          command: |
+            cd ~/projects/tests
+            robot --include << parameters.include-tags >> \
+                  --exclude TODO -e future -e obsolete -e libtest \
+                  --console dotted \
+                  --loglevel TRACE \
+                  --noncritical not-ready \
+                  --flattenkeywords for \
+                  --flattenkeywords foritem \
+                  --flattenkeywords name:_resources.* \
+                  --outputdir results/<< parameters.test-suite-name >> \
+                  --name << parameters.test-suite-name >> \
+                  -v nodocker \
+                  robot/<< parameters.test-suite-path >>/
+      # - cache-in-python-requirements
+      - save-test-results-folder
+      - store_test_results:
+          path: ~/projects/ehrbase/tests/results/
+      - store_artifacts:
+          path: ~/projects/ehrbase/tests/results/
+
+
+  save-test-results-folder:
+    description: Persist Robot tests folder to workspace
+    steps:
+      - run:
+          name: PERSIST ROBOT TEST RESULTS
+          when: always
+          command: echo "persist test results"
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - projects/tests/results
+
+
+  restore-test-results-folder:
+    description: Attach Robot tests folder back to workspace
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
 
   merge-robot-outputs:
     description: Merge Robot Results from Parallel Tests
@@ -1092,6 +1172,19 @@ commands:
           command: |
             # cd ~/projects
             mvn package -Dmaven.javadoc.skip=true     # -Dmaven.test.skip
+
+
+  start-ehrbase-server:
+    steps:
+      - install-maven
+      - run:
+          name: Start EHRbase server
+          background: true
+          command: |
+            ls -la
+            EHRbase_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+            echo ${EHRbase_VERSION}
+            java -jar application/target/application-${EHRbase_VERSION}.jar --cache.enabled=false > log
 
 
   cache-in-ehrbase-m2-dependencies-syncbranch:
