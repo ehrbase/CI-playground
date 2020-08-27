@@ -528,7 +528,11 @@ jobs:
     executor: docker-py3-java11-postgres
     steps:
       - checkout
-      - run: echo $SONAR_TOKEN
+      - install-maven
+      - restore-local-sdk-installation
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-and-run-java-integration-sdk-tests
+
 
 
 
@@ -971,6 +975,7 @@ commands:
           root: /home/circleci
           paths:
             - .m2/repository/com/github/ehrbase/openEHR_SDK
+            - projects/openEHR_SDK
             - projects/SDK_VERSION
 
 
@@ -979,6 +984,26 @@ commands:
       - attach_workspace:
           at: /home/circleci/
 
+
+  start-ehrbase-and-run-java-integration-sdk-tests:
+    description: |
+      Starts ehrbase server and runs maven test phase using 'slow' profile defined in parent pom.xml
+      This way only the Java integration tests are executed.
+    steps:
+      - run:
+          name: Start EHRbase server and run SDK's java integration tests
+          command: |
+            ls -la
+            cd ~/projects
+            EHRbase_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+            echo ${EHRbase_VERSION}
+            java -jar application/target/application-${EHRbase_VERSION}.jar --cache.enabled=false > log &
+            grep -m 1 "Started EhrBase in" <(tail -f log)
+            cd ~/projects/openEHR_SDK
+            jps
+            # mvn verify -DskipIntegrationTests=false -Dmaven.javadoc.skip=true
+            mvn test -Pslow -Dmaven.javadoc.skip=true
+    
 
   start-ehrbase-and-run-all-sdk-tests:
     description: |
