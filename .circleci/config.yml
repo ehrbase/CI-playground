@@ -506,7 +506,7 @@ jobs:
       - git-clone-sdk-repo
       - git-checkout-sdk-sync-branch
       - maven-install-sdk
-      - save-local-sdk-installation:
+      - save-local-sdk-installation
 
   build package ehrbase with locally installed sd:
     executor: machine-ubuntu-1604
