@@ -459,7 +459,28 @@ workflows:
   # WORKFLOW 3/3
   synced-feature-check:
     description: |
-      TODO
+      HOW TO USE THIS WORKFLOW?
+      =========================
+
+      1. create a branch "sync/[issue-id]_name branches" in
+
+        - ehrbase repo       --> i.e.    sync/123_example-issue
+        - openehr_sdk repo   --> i.e.    sync/123_example-issue
+
+      2. apply your code changes
+      3. push to openehr_sdk repo (NO CI will be triggered)
+      4. push to ehrbase repo
+
+
+      WHAT THIS WORKFLOW DOES
+      =======================
+
+      5. CI kicks in after push to ehrbase repo and will
+          - pull, build, test (unit), install SDK (makes SDK available from ~/.m2)
+          - build (using locally installed SDK), test (unit) and package ehrbase (.../target/.jar)
+          - start ehrbase server (from previously packaged .jar)
+          - run SDK's (java) integration tests
+          - run EHRbase's (robot) integration tests
     when:
       and:
         - contains: [ sync/*, << pipeline.git.branch >> ]
@@ -920,7 +941,7 @@ commands:
             SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo $SDK_VERSION > ~/projects/SDK_VERSION
             cat ~/projects/SDK_VERSION
-            mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-test
+            mvn clean install -Dmaven.javadoc.skip=true   # -Dmaven.test.skip
 
 
   start-ehrbase-and-run-java-integration-sdk-tests:
@@ -1019,8 +1040,8 @@ commands:
           name: Save unit test results
           command: |
             mkdir -p ~/sdk-test-results/unit-tests/
-            find openEHR_SDK/ -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/sdk-test-results/unit-tests/ \;
-            find openEHR_SDK/ -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} ~/sdk-test-results/unit-tests/ \;
+            find ~/projects/openEHR_SDK/ -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/sdk-test-results/unit-tests/ \;
+            find ~/projects/openEHR_SDK/ -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} ~/sdk-test-results/unit-tests/ \;
           when: always
   
 
@@ -1030,8 +1051,8 @@ commands:
           name: Save integration test results
           command: |
             mkdir -p ~/sdk-test-results/integration-tests/
-            find openEHR_SDK/ -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/sdk-test-results/integration-tests/ \;
-            find openEHR_SDK/ -type f -regex ".*/target/failsafe-reports/.*txt" -exec cp {} ~/sdk-test-results/integration-tests/ \;
+            find ~/projects/openEHR_SDK/ -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/sdk-test-results/integration-tests/ \;
+            find ~/projects/openEHR_SDK/ -type f -regex ".*/target/failsafe-reports/.*txt" -exec cp {} ~/sdk-test-results/integration-tests/ \;
           when: always
 
     
@@ -1070,7 +1091,7 @@ commands:
           name: Maven build EHRbase
           command: |
             # cd ~/projects
-            mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-tests
+            mvn package -Dmaven.javadoc.skip=true     # -Dmaven.test.skip
 
 
   cache-in-ehrbase-m2-dependencies-syncbranch:
