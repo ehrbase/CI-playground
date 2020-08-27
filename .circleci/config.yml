@@ -499,21 +499,23 @@ jobs:
 
 
   pull build install sdk from sync-branch:
-    executor: machine-ubuntu-1604
+    # executor: machine-ubuntu-1604
+    executor: docker-python3-java11
     steps:
       - checkout
-      - install-java-11
+      # - install-java-11
       - git-clone-sdk-repo
       - git-checkout-sdk-sync-branch
       - maven-install-sdk
       - save-local-sdk-installation
 
   build package ehrbase with locally installed sdk:
-    executor: machine-ubuntu-1604
+    # executor: machine-ubuntu-1604
+    executor: docker-py3-java11-postgres
     steps:
       - checkout
-      - install-java-11
-      - setup-database
+      # - install-java-11
+      # - setup-database
       - restore-local-sdk-installation
       - build-and-test-ehrbase
       - save-packaged-ehrbase-jar
@@ -1603,10 +1605,10 @@ orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 executors:
-#   docker-python3-java11:
-#     working_directory: ~/projects
-#     docker:
-#       - image: circleci/python@sha256:e1c98a85c5ee62ac52a2779fe5abe2677f021c8e3158e4fb2d569c7b9c6ac073
+  docker-python3-java11:
+    working_directory: ~/projects
+    docker:
+      - image: circleci/python@sha256:e1c98a85c5ee62ac52a2779fe5abe2677f021c8e3158e4fb2d569c7b9c6ac073
 
   docker-py3-java11-postgres:
     working_directory: ~/projects
