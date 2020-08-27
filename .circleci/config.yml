@@ -499,11 +499,12 @@ jobs:
 
 
   pull build install sdk from sync-branch:
-    executor: machine-ubuntu-1604
+    # executor: machine-ubuntu-1604
+    executor: machine-ubuntu-2004
     # executor: docker-python3-java11
     steps:
       - checkout
-      - install-java-11
+      # - install-java-11
       # - install-maven
       - git-clone-sdk-repo
       - git-checkout-sdk-sync-branch
@@ -511,11 +512,12 @@ jobs:
       - save-local-sdk-installation
 
   build package ehrbase with locally installed sdk:
-    executor: machine-ubuntu-1604
+    # executor: machine-ubuntu-1604
+    executor: machine-ubuntu-2004
     # executor: docker-py3-java11-postgres
     steps:
       - checkout
-      - install-java-11
+      # - install-java-11
       - setup-database
       # - install-maven
       - restore-local-sdk-installation
@@ -524,11 +526,12 @@ jobs:
 
 
   run java integration tests - sdk:
-    executor: machine-ubuntu-1604
+    # executor: machine-ubuntu-1604
+    executor: machine-ubuntu-2004
     # executor: docker-py3-java11-postgres
     steps:
       - checkout
-      - install-java-11
+      # - install-java-11
       - setup-database
       # - install-maven
       - restore-local-sdk-installation
@@ -1652,9 +1655,8 @@ executors:
   machine-ubuntu-1604:
     description: |
       Ubuntu 1604 VM
-      - Python versions 2/3
-      - Pyenv (to switch between python versions)
-      - Pip
+      - Python/Python3
+      - Pip/Pip3
       - Java 8 and Maven
       - Docker 18.06
       - Docker-Compose 1.22.0
@@ -1666,6 +1668,38 @@ executors:
       # image: circleci/classic:201808-01
       # image: ubuntu-1604:201903-01
       image: ubuntu-1604:202007-01
+
+
+  machine-ubuntu-2004:
+    description: |
+      Ubuntu 20.04 VM (machine executor)
+      - aws-cli 2.0.43
+      - chrome 85.0.4183
+      - chromedriver 85.0.4183
+      - docker 19.03.12
+      - docker-compose 1.26.2
+      - firefox 80.0.0
+      - go 1.15
+      - google cloud sdk 307.0.0
+      - gradle 6.6
+      - heroku 7.42.12
+      - leiningen 2.9.4
+      - maven 3.6.3
+      - node 12.18.3 (default)
+      - node 14.8.0
+      - openjdk 1.8
+      - openjdk 11.0.8 (default)
+      - python 2.7.17
+      - python 3.8.5
+      - ruby 2.7.1
+      - sbt 1.3.13
+      - yarn 1.22.4
+    working_directory: ~/projects
+    environment:
+      PIPELINE_ID: << pipeline.id >>
+      BRANCH_NAME: << pipeline.git.branch >>
+    machine:
+      image: ubuntu-2004:202008-01
 
 
 
