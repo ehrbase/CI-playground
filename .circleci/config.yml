@@ -458,10 +458,9 @@ workflows:
 
   # WORKFLOW 3/3
   synced-feature-check:
-    context: org-global
     when:
       and:
-        - equal: [ sync*, << pipeline.git.branch >> ]
+        - contains: [ sync/*, << pipeline.git.branch >> ]
     jobs:
       # - test-ehrbase-and-sdk-changes:
       #     context: org-global
