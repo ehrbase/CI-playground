@@ -461,7 +461,7 @@ workflows:
     context: org-global
     when:
       and:
-        - equal: [ /sync\/.*/, << pipeline.git.branch >> ]
+        - equal: [ sync/*, << pipeline.git.branch >> ]
     jobs:
       # - test-ehrbase-and-sdk-changes:
       #     context: org-global
