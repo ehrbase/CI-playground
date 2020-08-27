@@ -472,13 +472,13 @@ workflows:
 
 
       - pull build install sdk from sync-branch
-      - build package ehrbase with locally installed sd:
+      - build package ehrbase with locally installed sdk:
           requires:
             - pull build install sdk from sync-branch
       - run java integration tests - sdk:
           requires:
             - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sd
+            - build package ehrbase with locally installed sdk
       # - run robot integration tests - ehrbase - aql only
       # - run robot integration tests - ehrbase - all except aql
 
@@ -508,7 +508,7 @@ jobs:
       - maven-install-sdk
       - save-local-sdk-installation
 
-  build package ehrbase with locally installed sd:
+  build package ehrbase with locally installed sdk:
     executor: machine-ubuntu-1604
     steps:
       - checkout
@@ -516,6 +516,7 @@ jobs:
       - setup-database
       - restore-local-sdk-installation
       - build-and-test-ehrbase
+      - save-packaged-ehrbase-jar
 
 
   run java integration tests - sdk:
@@ -965,6 +966,7 @@ commands:
           root: /home/circleci
           paths:
             - .m2/repository/com/github/ehrbase/openEHR_SDK
+            - projects/SDK_VERSION
 
 
   restore-local-sdk-installation:
@@ -1053,8 +1055,18 @@ commands:
             mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-tests
 
 
+  save-packaged-ehrbase-jar:
+    steps:
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - projects/application/target
 
-
+ 
+  restore-packaged-ehrbase-jar:
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
 
   #                                                 88                 ad88
   #     ,d                             ,d           ""                d8"
