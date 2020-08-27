@@ -513,7 +513,9 @@ jobs:
       # - setup-database
       - install-maven
       - restore-local-sdk-installation
+      - cache-out-ehrbase-m2-dependencies-syncbranch
       - build-and-test-ehrbase
+      - cache-in-ehrbase-m2-dependencies-syncbranch
       - save-packaged-ehrbase-jar
 
 
@@ -913,22 +915,6 @@ commands:
             mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-test
 
 
-  save-local-sdk-installation:
-    steps:
-      - persist_to_workspace:
-          root: /home/circleci
-          paths:
-            - .m2/repository/com/github/ehrbase/openEHR_SDK
-            - projects/openEHR_SDK
-            - projects/SDK_VERSION
-
-
-  restore-local-sdk-installation:
-    steps:
-      - attach_workspace:
-          at: /home/circleci/
-
-
   start-ehrbase-and-run-java-integration-sdk-tests:
     description: |
       Starts ehrbase server and runs maven test phase using 'slow' profile defined in parent pom.xml
@@ -967,6 +953,56 @@ commands:
             cd ~/projects/openEHR_SDK
             jps
             mvn verify -DskipIntegrationTests=false -Dmaven.javadoc.skip=true
+
+
+  save-local-sdk-installation:
+    steps:
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - .m2/repository/com/github/ehrbase/openEHR_SDK
+            - projects/openEHR_SDK
+            - projects/SDK_VERSION
+
+
+  restore-local-sdk-installation:
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
+
+
+  cache-out-sdk-m2-dependencies:
+      steps:
+        - run:
+            name: Generate Cache Checksum for openEHR_SDK Dependencies
+            command: find openEHR_SDK/ -name 'pom.xml' | sort | xargs cat > /tmp/openEHR_SDK_maven_cache_seed
+        - restore_cache:
+            key: openEHR_SDK-
+
+
+  cache-in-sdk-m2-dependencies:
+    steps:
+      - save_cache:
+          key: openEHR_SDK-{{ checksum "/tmp/openEHR_SDK_maven_cache_seed" }}
+          paths:
+          - ~/.m2
+
+
+  cache-out-sdk-m2-dependencies-sync-branch:
+      steps:
+        - run:
+            name: Generate Cache Checksum for openEHR_SDK Dependencies
+            command: find openEHR_SDK/ -name 'pom.xml' | sort | xargs cat > /tmp/openEHR_SDK_syncbranch_maven_cache_seed
+        - restore_cache:
+            key: openEHR_SDK-syncbranch-v1-
+
+
+  cache-in-sdk-m2-dependencies-sync-branch:
+    steps:
+      - save_cache:
+          key: openEHR_SDK-syncbranch-v1-{{ checksum "/tmp/openEHR_SDK_syncbranch_maven_cache_seed" }}
+          paths:
+          - ~/.m2
 
 
   collect-sdk-unittest-results:
@@ -1029,6 +1065,22 @@ commands:
             mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-tests
 
 
+  cache-in-ehrbase-m2-dependencies-syncbranch:
+    steps:
+      - save_cache:
+          key: EHRbase-sychbranch-v1-{{ checksum "/tmp/EHRbase_syncbranch_maven_cache_seed" }}
+          paths:
+            - ~/.m2
+
+
+  cache-out-ehrbase-m2-dependencies-syncbranch:
+    steps:
+      - run:
+          name: Generate Cache Checksum for EHRbase Dependencies
+          command: find ~/projects/ehrbase -name 'pom.xml' | sort | xargs cat > /tmp/EHRbase_syncbranch_maven_cache_seed
+      - restore_cache:
+          key: EHRbase-sychbranch-v1-
+
   save-packaged-ehrbase-jar:
     steps:
       - persist_to_workspace:
@@ -1041,6 +1093,10 @@ commands:
     steps:
       - attach_workspace:
           at: /home/circleci/
+
+
+
+
 
   #                                                 88                 ad88
   #     ,d                             ,d           ""                d8"
@@ -1410,38 +1466,6 @@ commands:
   #        `"Ybbd8"'  `"8bbdP"Y8   `"Ybbd8"'  88       88   `"Ybbd8"'
   #
 
-  cache-out-sdk-m2-dependencies:
-      steps:
-        - run:
-            name: Generate Cache Checksum for openEHR_SDK Dependencies
-            command: find openEHR_SDK/ -name 'pom.xml' | sort | xargs cat > /tmp/openEHR_SDK_maven_cache_seed
-        - restore_cache:
-            key: openEHR_SDK-
-
-
-  cache-in-sdk-m2-dependencies:
-    steps:
-      - save_cache:
-          key: openEHR_SDK-{{ checksum "/tmp/openEHR_SDK_maven_cache_seed" }}
-          paths:
-          - ~/.m2
-
-
-  cache-out-sdk-m2-dependencies-sync-branch:
-      steps:
-        - run:
-            name: Generate Cache Checksum for openEHR_SDK Dependencies
-            command: find openEHR_SDK/ -name 'pom.xml' | sort | xargs cat > /tmp/openEHR_SDK_syncbranch_maven_cache_seed
-        - restore_cache:
-            key: openEHR_SDK-syncbranch-v1-
-
-
-  cache-in-sdk-m2-dependencies-sync-branch:
-    steps:
-      - save_cache:
-          key: openEHR_SDK-syncbranch-v1-{{ checksum "/tmp/openEHR_SDK_syncbranch_maven_cache_seed" }}
-          paths:
-          - ~/.m2
 
   save-integration-tests-job-caches:
     description: Save all caches in interation tests job
