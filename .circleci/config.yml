@@ -512,7 +512,10 @@ jobs:
     executor: machine-ubuntu-1604
     steps:
       - checkout
-      - run: echo $WLAD
+      - install-java-11
+      - setup-database
+      - restore-local-sdk-installation
+      - build-and-test-ehrbase
 
 
   run java integration tests - sdk:
@@ -1047,7 +1050,7 @@ commands:
           name: Maven build EHRbase
           command: |
             # cd ~/projects
-            mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip
+            mvn package -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-tests
 
 
 
