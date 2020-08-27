@@ -468,11 +468,17 @@ workflows:
       #       branches:
       #         only:
       #           - /sync\/.*/
+
+
+
       - pull build install sdk from sync-branch
-          # context: org-global
-      # - build package ehrbase with locally installed sd:
-      - run java integration tests - sdk
-          # context: org-global
+      - build package ehrbase with locally installed sd:
+          requires:
+            - pull build install sdk from sync-branch
+      - run java integration tests - sdk:
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sd
       # - run robot integration tests - ehrbase - aql only
       # - run robot integration tests - ehrbase - all except aql
 
@@ -496,13 +502,29 @@ jobs:
     executor: machine-ubuntu-1604
     steps:
       - checkout
+      - install-java-11
+      - git-clone-sdk-repo
+      - git-checkout-sdk-sync-branch
+      - maven-install-sdk
+      - save-local-sdk-installation:
+
+  build package ehrbase with locally installed sd:
+    executor: machine-ubuntu-1604
+    steps:
+      - checkout
       - run: echo $WLAD
+
 
   run java integration tests - sdk:
     executor: machine-ubuntu-1604
     steps:
       - checkout
       - run: echo $SONAR_TOKEN
+
+
+
+
+
 
   test-ehrbase-and-sdk-changes:
     executor: machine-ubuntu-1604
@@ -517,7 +539,7 @@ jobs:
       - run:
           name: CLONE SDK REPO AND CHECKOUT SYNC/BRANCH
           command: |
-            echo $CIRCLE_BRANCH
+            # echo $CIRCLE_BRANCH
             echo BRANCH NAME TO CHECKOUT: $BRANCH_NAME
             git clone git@github.com:ehrbase/openEHR_SDK.git
             cd ~/projects/openEHR_SDK
@@ -907,10 +929,45 @@ commands:
   git-clone-sdk-repo:
     steps:
       - run:
-          name: Git clone openEHR_SDK repo
+          name: CLONE SDK REPO
           command: |
             git clone git@github.com:ehrbase/openEHR_SDK.git
             ls -la
+  
+  git-checkout-sdk-sync-branch:
+    steps:
+      - run:
+          name: CHECKOUT SDK SYNC/BRANCH
+          command: |
+            echo BRANCH NAME TO CHECKOUT: $BRANCH_NAME
+            cd ~/projects/openEHR_SDK
+            git checkout $BRANCH_NAME
+  
+
+  maven-install-sdk:
+    steps:
+      - run:
+          name: INSTALL SDK
+          command: |
+            cd ~/projects/openEHR_SDK
+            SDK_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+            echo $SDK_VERSION > ~/projects/SDK_VERSION
+            cat ~/projects/SDK_VERSION
+            mvn clean install -Dmaven.javadoc.skip=true -Dmaven.test.skip    # TODO: remove skip-test
+
+
+  save-local-sdk-installation:
+    steps:
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - .m2/repository/com/github/ehrbase/openEHR_SDK
+
+
+  restore-local-sdk-installation:
+    steps:
+      - attach_workspace:
+          at: /home/circleci/
 
 
   start-ehrbase-and-run-all-sdk-tests:
