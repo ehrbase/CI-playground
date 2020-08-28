@@ -498,7 +498,7 @@ workflows:
           requires:
             - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
-      - ROBOT-REPORT:
+      - ROBOT-TEST-REPORT:
           context: org-global
           requires:
             - dCOMPOSITION-tests-1
@@ -753,6 +753,12 @@ jobs:
           include-tags: "OAUTH"
           # test-suite-path: ""
           test-suite-name: "KEYCLOAK-OAUTH"
+
+  ROBOT-TEST-REPORT:
+    executor: docker-python3-java11
+    steps:
+      - restore-test-results-folder
+      - merge-robot-outputs
 
   ROBOT-REPORT:
     machine:
