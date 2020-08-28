@@ -1001,11 +1001,11 @@ commands:
                   --log NONE \
                   --report NONE \
                   results/EHRbase-output.xml
-      - persist-tests-folder
+      - save-test-results-folder
       - store_test_results:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
       - store_artifacts:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
 
 
 
