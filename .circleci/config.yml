@@ -621,6 +621,7 @@ jobs:
   dCOMPOSITION-tests-1:
     executor: docker-py3-java11-postgres
     steps:
+      - checkout
       - restore-packaged-ehrbase-jar
       - start-ehrbase-server
       - run-robot-tests-in-docker:
