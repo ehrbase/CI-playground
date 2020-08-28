@@ -498,7 +498,57 @@ workflows:
           requires:
             - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-2:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-3:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-4:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - CONTRIBUTION-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - DIRECTORY-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - EHRSERVICE-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - EHRSTATUS-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
       - KNOWLEDGE-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - QUERYSERVICE-test-1:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      # - QUERYSERVICE-test-2:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      - SECURITY-test:
           context: org-global
           requires:
             - pull build install sdk from sync-branch
@@ -507,17 +557,17 @@ workflows:
           context: org-global
           requires:
             - COMPOSITION-tests-1
-            # - COMPOSITION-tests-2
-            # - COMPOSITION-tests-3
-            # - COMPOSITION-tests-4
-            # - CONTRIBUTION-test
-            # - DIRECTORY-test
-            # - EHRSERVICE-test
-            # - EHRSTATUS-test
+            - COMPOSITION-tests-2
+            - COMPOSITION-tests-3
+            - COMPOSITION-tests-4
+            - CONTRIBUTION-test
+            - DIRECTORY-test
+            - EHRSERVICE-test
+            - EHRSTATUS-test
             - KNOWLEDGE-test
-            # - QUERYSERVICE-test-1
+            - QUERYSERVICE-test-1
             # - QUERYSERVICE-test-2
-            # - SECURITY-test
+            - SECURITY-test
 
 
 
@@ -661,63 +711,77 @@ jobs:
           test-suite-name: "COMPOSITION_1"
 
   COMPOSITION-tests-2:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "compositionANDjson2"
           test-suite-path: "COMPOSITION_TESTS"
           test-suite-name: "COMPOSITION_2"
 
   COMPOSITION-tests-3:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "compositionANDxml1"
           test-suite-path: "COMPOSITION_TESTS"
           test-suite-name: "COMPOSITION_3"
 
   COMPOSITION-tests-4:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "compositionANDxml2"
           test-suite-path: "COMPOSITION_TESTS"
           test-suite-name: "COMPOSITION_4"
 
   CONTRIBUTION-test:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "CONTRIBUTION"
           test-suite-path: "CONTRIBUTION_TESTS"
           test-suite-name: "CONTRIBUTION"
 
   DIRECTORY-test:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "directory"
           test-suite-path: "DIRECTORY_TESTS"
           test-suite-name: "DIRECTORY"
 
   EHRSERVICE-test:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "EHR_SERVICE"
           test-suite-path: "EHR_SERVICE_TESTS"
           test-suite-name: "EHR_SERVICE"
 
   EHRSTATUS-test:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "EHR_STATUS"
           test-suite-path: "EHR_STATUS_TESTS"
@@ -735,18 +799,22 @@ jobs:
           test-suite-name: "KNOWLEDGE"
 
   QUERYSERVICE-test-1:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "aql_adhoc-queryANDempty_db"
           test-suite-path: "QUERY_SERVICE_TESTS"
           test-suite-name: "ADHOC-QUERY-1"
 
   QUERYSERVICE-test-2:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "aql_adhoc-queryANDloaded_db"
           test-suite-path: "QUERY_SERVICE_TESTS"
