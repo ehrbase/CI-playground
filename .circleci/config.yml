@@ -548,11 +548,11 @@ workflows:
       #     requires:
       #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
-      - SECURITY-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
+      # - SECURITY-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
       - ROBOT-TEST-REPORT:
           context: org-global
           requires:
@@ -567,7 +567,7 @@ workflows:
             - KNOWLEDGE-test
             - QUERYSERVICE-test-1
             # - QUERYSERVICE-test-2
-            - SECURITY-test
+            # - SECURITY-test
 
 
 
