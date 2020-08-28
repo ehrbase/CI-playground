@@ -498,6 +498,21 @@ workflows:
           requires:
             - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
+      - ROBOT-REPORT:
+          context: org-global
+          requires:
+            - dCOMPOSITION-tests-1
+            # - COMPOSITION-tests-2
+            # - COMPOSITION-tests-3
+            # - COMPOSITION-tests-4
+            # - CONTRIBUTION-test
+            # - DIRECTORY-test
+            # - EHRSERVICE-test
+            # - EHRSTATUS-test
+            # - KNOWLEDGE-test
+            # - QUERYSERVICE-test-1
+            # - QUERYSERVICE-test-2
+            # - SECURITY-test
 
 
 
@@ -918,9 +933,9 @@ commands:
       # - cache-in-python-requirements
       - save-test-results-folder
       - store_test_results:
-          path: ~/projects/ehrbase/tests/results/
+          path: ~/projects/tests/results/
       - store_artifacts:
-          path: ~/projects/ehrbase/tests/results/
+          path: ~/projects/tests/results/
 
 
   save-test-results-folder:
