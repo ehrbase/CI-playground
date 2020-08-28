@@ -1359,7 +1359,7 @@ commands:
           name: Install Python requirements
           command: |
             python -c "import site; print(site.getsitepackages())"
-            pip install -r ~/projectstests/requirements.txt
+            pip install -r ~/projects/tests/requirements.txt
 
   setup-database:
     description: Setup ehrbase database
