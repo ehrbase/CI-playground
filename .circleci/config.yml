@@ -493,7 +493,12 @@ workflows:
           requires:
             - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
-      - dCOMPOSITION-tests-1:
+      - COMPOSITION-tests-1:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
+      - KNOWLEDGE-test:
           context: org-global
           requires:
             - pull build install sdk from sync-branch
@@ -501,7 +506,7 @@ workflows:
       - ROBOT-TEST-REPORT:
           context: org-global
           requires:
-            - dCOMPOSITION-tests-1
+            - COMPOSITION-tests-1
             # - COMPOSITION-tests-2
             # - COMPOSITION-tests-3
             # - COMPOSITION-tests-4
@@ -509,7 +514,7 @@ workflows:
             # - DIRECTORY-test
             # - EHRSERVICE-test
             # - EHRSTATUS-test
-            # - KNOWLEDGE-test
+            - KNOWLEDGE-test
             # - QUERYSERVICE-test-1
             # - QUERYSERVICE-test-2
             # - SECURITY-test
@@ -645,9 +650,11 @@ jobs:
           test-suite-name: "COMPOSITION_1"
   
   COMPOSITION-tests-1:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "compositionANDjson1"
           test-suite-path: "COMPOSITION_TESTS"
@@ -717,9 +724,11 @@ jobs:
           test-suite-name: "EHR_STATUS"
 
   KNOWLEDGE-test:
-    machine:
-      image: ubuntu-1604:201903-01
+    executor: docker-py3-java11-postgres
     steps:
+      - checkout
+      - restore-packaged-ehrbase-jar
+      - start-ehrbase-server
       - run-robot-tests:
           include-tags: "KNOWLEDGE"
           test-suite-path: "KNOWLEDGE_TESTS"
@@ -811,7 +820,7 @@ commands:
   #   88           `"YbbdP"'   8Y"Ybbd8"'    `"YbbdP"'    "Y888          "Y888  `"Ybbd8"'  `"YbbdP"'    "Y888  `"YbbdP"'
   #
 
-  run-robot-tests:
+  run-robot-tests-old:
     description: Run integration tests written in Robot Framework
     parameters:
       include-tags:
@@ -899,7 +908,7 @@ commands:
 
 
   # USE THIS COMMAND W/ DOCKER EXECUTOR ONLY!!! 
-  run-robot-tests-in-docker:
+  run-robot-tests:
     description: Run integration tests written in Robot Framework
     parameters:
       include-tags:
