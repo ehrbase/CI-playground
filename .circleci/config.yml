@@ -493,10 +493,10 @@ workflows:
       # - run java integration tests - sdk:
       #     requires:
       #       - build package ehrbase with locally installed sdk
-      # - COMPOSITION-tests-1:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-1:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-2:
       #     context: org-global
       #     requires:
@@ -936,7 +936,7 @@ commands:
         description: Titel of generated Robot Log/Report.html
         type: string
     steps:
-      - configure-python-version
+      # - configure-python-version
       # - checkout
       # - restore-integration-tests-job-caches
       # - attach-target-folder
