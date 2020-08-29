@@ -581,12 +581,12 @@ jobs:
       - install-maven
       - git-clone-sdk-repo
       - git-checkout-sdk-sync-branch
-      - cache-out-sdk-m2-dependencies-sync-branch
+      # - cache-out-sdk-m2-dependencies-sync-branch
       - maven-install-sdk
-      - cache-in-sdk-m2-dependencies-sync-branch
+      # - cache-in-sdk-m2-dependencies-sync-branch
       - save-local-sdk-installation
-      - collect-sdk-unittest-results
-      - save-skd-test-results
+      # - collect-sdk-unittest-results
+      # - save-skd-test-results
 
 
   build package ehrbase with locally installed sdk:
@@ -597,12 +597,13 @@ jobs:
       # - setup-database    # required for machin executor
       - install-maven
       - restore-local-sdk-installation
-      - cache-out-ehrbase-m2-dependencies-syncbranch
+      # - cache-out-ehrbase-m2-dependencies-syncbranch
       - build-and-test-ehrbase
-      - cache-in-ehrbase-m2-dependencies-syncbranch
+      # - cache-in-ehrbase-m2-dependencies-syncbranch
       - save-packaged-ehrbase-jar
-      - collect-ehrbase-unittest-results
-      - save-ehrbase-test-results
+      - run: pwd
+      # - collect-ehrbase-unittest-results
+      # - save-ehrbase-test-results
 
 
   run java integration tests - sdk:
@@ -815,7 +816,9 @@ jobs:
     steps:
       - checkout
       - install-and-configure-keycloak
+      - run: pwd
       - run: ls -la
+      - run: cd .. && ls -la
       - restore-packaged-ehrbase-jar
       - run-robot-tests-with-oauth:
           include-tags: "OAUTH"
