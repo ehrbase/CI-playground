@@ -492,67 +492,54 @@ workflows:
             - pull build install sdk from sync-branch
       # - run java integration tests - sdk:
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-1:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-2:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-3:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-4:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - CONTRIBUTION-test:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - DIRECTORY-test:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - EHRSERVICE-test:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - EHRSTATUS-test:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - KNOWLEDGE-test:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - QUERYSERVICE-test-1:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       # - QUERYSERVICE-test-2:
       #     context: org-global
       #     requires:
-      #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
       - SECURITY-test:
           context: org-global
           requires:
-            - pull build install sdk from sync-branch
             - build package ehrbase with locally installed sdk
       - ROBOT-TEST-REPORT:
           context: org-global
@@ -954,7 +941,9 @@ commands:
       # - attach-target-folder
       - install-python-requirements
       - install-java-11
+      - run: pwd
       - run: ls -la
+      - run: cd .. && ls -la
       - run:
           name: EXECUTE ROBOT COMMAND
           no_output_timeout: 30m
