@@ -485,58 +485,59 @@ workflows:
     when:
       or:
         - contains: [ sync/*, << pipeline.git.branch >> ]
+        - contains: [ feature/sync/*, << pipeline.git.branch >> ]
     jobs:
       - pull build install sdk from sync-branch
       - build package ehrbase with locally installed sdk:
           requires:
             - pull build install sdk from sync-branch
-      # - run java integration tests - sdk:
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - COMPOSITION-tests-1:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - COMPOSITION-tests-2:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - COMPOSITION-tests-3:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - COMPOSITION-tests-4:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - CONTRIBUTION-test:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - DIRECTORY-test:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - EHRSERVICE-test:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - EHRSTATUS-test:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - KNOWLEDGE-test:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - QUERYSERVICE-test-1:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
-      # - QUERYSERVICE-test-2:
-      #     context: org-global
-      #     requires:
-      #       - build package ehrbase with locally installed sdk
+      - run java integration tests - sdk:
+          requires:
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-1:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-2:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-3:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - COMPOSITION-tests-4:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - CONTRIBUTION-test:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - DIRECTORY-test:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - EHRSERVICE-test:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - EHRSTATUS-test:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - KNOWLEDGE-test:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - QUERYSERVICE-test-1:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
+      - QUERYSERVICE-test-2:
+          context: org-global
+          requires:
+            - build package ehrbase with locally installed sdk
       - SECURITY-test:
           context: org-global
           requires:
@@ -544,17 +545,17 @@ workflows:
       - ROBOT-TEST-REPORT:
           context: org-global
           requires:
-            # - COMPOSITION-tests-1
-            # - COMPOSITION-tests-2
-            # - COMPOSITION-tests-3
-            # - COMPOSITION-tests-4
-            # - CONTRIBUTION-test
-            # - DIRECTORY-test
-            # - EHRSERVICE-test
-            # - EHRSTATUS-test
-            # - KNOWLEDGE-test
-            # - QUERYSERVICE-test-1
-            # - QUERYSERVICE-test-2
+            - COMPOSITION-tests-1
+            - COMPOSITION-tests-2
+            - COMPOSITION-tests-3
+            - COMPOSITION-tests-4
+            - CONTRIBUTION-test
+            - DIRECTORY-test
+            - EHRSERVICE-test
+            - EHRSTATUS-test
+            - KNOWLEDGE-test
+            - QUERYSERVICE-test-1
+            - QUERYSERVICE-test-2
             - SECURITY-test
 
 
@@ -914,9 +915,9 @@ commands:
       - save-integration-tests-job-caches
       - persist-tests-folder
       - store_test_results:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
       - store_artifacts:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
 
 
   run-robot-tests-with-oauth:
@@ -1139,7 +1140,7 @@ commands:
             ls -la
             EHRbase_VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
             echo ${EHRbase_VERSION}
-            cd ~/project    # NOTE: This is where the target folder w/ artifacts were persisted to in previous step.
+            cd ~/projects    # NOTE: This is where the target folder w/ artifacts were persisted to in previous step.
             java -jar application/target/application-${EHRbase_VERSION}.jar --cache.enabled=false > log &
             grep -m 1 "Started EhrBase in" <(tail -f log)
             cd ~/projects/openEHR_SDK
@@ -1253,7 +1254,6 @@ commands:
       - run:
           name: Maven build EHRbase
           command: |
-            # cd ~/projects
             mvn package -Dmaven.javadoc.skip=true     # -Dmaven.test.skip
 
 
@@ -1433,7 +1433,7 @@ commands:
           name: Install Python requirements
           command: |
             python -c "import site; print(site.getsitepackages())"
-            pip install -r ~/project/tests/requirements.txt
+            pip install -r ~/projects/tests/requirements.txt
 
   install-python3-requirements:
     description: Install Python requirements
@@ -1463,7 +1463,7 @@ commands:
       - run:
           name: Unzip provided file repo
           command: |
-            unzip ~/project/.circleci/file_repo_content.zip -d ~/project
+            unzip ~/projects/.circleci/file_repo_content.zip -d ~/projects
 
   setup-jacoco-distribution:
     description: Download and unzip Jacoco distribution
@@ -1484,7 +1484,7 @@ commands:
           name: Collect integration test coverage
           command: |
             java -jar ~/jacoco-0.8.2/lib/jacococli.jar dump \
-              --destfile=/home/circleci/project/application/target/jacoco-it.exec
+              --destfile=/home/circleci/projects/application/target/jacoco-it.exec
 
 
 
@@ -1506,7 +1506,7 @@ commands:
       - run:
           name: Test Maven app
           command: |
-            cd ~/project
+            cd ~/projects
             mvn org.jacoco:jacoco-maven-plugin:0.8.2:prepare-agent test \
                 org.jacoco:jacoco-maven-plugin:0.8.2:report
 
@@ -1516,18 +1516,18 @@ commands:
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - project/rest-ehr-scape/target/site/jacoco/jacoco.xml
-            - project/rest-openehr/target/site/jacoco/jacoco.xml
-            - project/serialisation/target/site/jacoco/jacoco.xml
-            - project/service/target/site/jacoco/jacoco.xml
-            - project/terminology/target/site/jacoco/jacoco.xml
-            - project/validation/target/site/jacoco/jacoco.xml
+            - projects/rest-ehr-scape/target/site/jacoco/jacoco.xml
+            - projects/rest-openehr/target/site/jacoco/jacoco.xml
+            - projects/serialisation/target/site/jacoco/jacoco.xml
+            - projects/service/target/site/jacoco/jacoco.xml
+            - projects/terminology/target/site/jacoco/jacoco.xml
+            - projects/validation/target/site/jacoco/jacoco.xml
 
   save-unit-tests-job-caches:
     description: Save all caches in unit tests job
     steps:
       - save_cache:
-          key: job-unit-tests-v1-mvn-dependencies-{{ checksum "~/project/pom.xml" }}
+          key: job-unit-tests-v1-mvn-dependencies-{{ checksum "~/projects/pom.xml" }}
           paths:
             - ~/.m2/repository
 
@@ -1536,7 +1536,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - job-unit-tests-v1-mvn-dependencies-{{ checksum "~/project/pom.xml" }}
+            - job-unit-tests-v1-mvn-dependencies-{{ checksum "~/projects/pom.xml" }}
             - job-unit-tests-v1-mvn-dependencies
 
 
@@ -1559,7 +1559,7 @@ commands:
       - run:
           name: Package Maven app
           command: |
-            cd ~/project
+            cd ~/projects
             mvn package -DskipTests
 
 
@@ -1589,12 +1589,12 @@ commands:
       - run:
           name: Excecute Sonar analysis
           command: |
-            chmod 744 ~/project/.circleci/*.sh
+            chmod 744 ~/projects/.circleci/*.sh
             ~/sonar-scanner-4.2.0.1873-linux/bin/sonar-scanner \
             -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.branch.name=$CIRCLE_BRANCH \
-            -Dsonar.branch.target=$(~/project/.circleci/get_target_branch.sh) \
-            -Dsonar.projectVersion=$(~/project/.circleci/verify_and_return_version.sh)
+            -Dsonar.branch.target=$(~/projects/.circleci/get_target_branch.sh) \
+            -Dsonar.projectVersion=$(~/projects/.circleci/verify_and_return_version.sh)
 
   run-dependency-check:
     description: Run dependency vulnerability analysis
@@ -1610,7 +1610,7 @@ commands:
       - run:
           name: Run dependency vulnerability analysis
           command: |
-            cd ~/project
+            cd ~/projects
             ~/dependency-check/bin/dependency-check.sh \
                 --project "EHRBase" --format JSON \
                 -o vulnerability_analysis.json --scan .
@@ -1618,9 +1618,9 @@ commands:
           name: Convert vulnerability analysis to sonar issues
           command: |
             pyenv global 3.7.0
-            python ~/project/.circleci/convert_vulnerability_analysis.py \
-                ~/project/vulnerability_analysis.json \
-                ~/project/sonar_issues.json \
+            python ~/projects/.circleci/convert_vulnerability_analysis.py \
+                ~/projects/vulnerability_analysis.json \
+                ~/projects/sonar_issues.json \
                 application/src/main/java/org/ehrbase/application/EhrBase.java
 
 
@@ -1648,7 +1648,7 @@ commands:
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - project/tests/results
+            - projects/tests/results
 
   attach-tests-folder:
     description: Attach Robot tests folder back to workspace
@@ -1662,7 +1662,7 @@ commands:
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - project/application/target/jacoco-it.exec
+            - projects/application/target/jacoco-it.exec
 
   persist-target-folder:
     description: Persist target folder to workspace
@@ -1670,7 +1670,7 @@ commands:
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - project/application/target
+            - projects/application/target
 
   attach-target-folder:
     description: Attach target folder back to workspace
@@ -1684,7 +1684,7 @@ commands:
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - project/sonar_issues.json
+            - projects/sonar_issues.json
 
 
 
@@ -1716,7 +1716,7 @@ commands:
           paths:
             - ~/jacoco-0.8.2
       - save_cache:
-          key: job-integration-tests-v2-pip-{{ checksum "~/project/tests/requirements.txt" }}
+          key: job-integration-tests-v2-pip-{{ checksum "~/projects/tests/requirements.txt" }}
           paths:
             - ~/.cache/pip
             # - /opt/circleci/.pyenv/versions/3.7.0/lib/python3.7/site-packages
@@ -1736,7 +1736,7 @@ commands:
             - job-integration-tests-v1-installation-0.8.2
       - restore_cache:
           keys:
-            - job-integration-tests-v2-pip-{{ checksum "~/project/tests/requirements.txt" }}
+            - job-integration-tests-v2-pip-{{ checksum "~/projects/tests/requirements.txt" }}
       - restore_cache:
           keys: google-chrome-incl-webdriver-
 
@@ -1766,7 +1766,7 @@ commands:
     description: Save all caches in building artifacts job
     steps:
       - save_cache:
-          key: job-build-artifacts-v1-mvn-dependencies-{{ checksum "~/project/pom.xml" }}
+          key: job-build-artifacts-v1-mvn-dependencies-{{ checksum "~/projects/pom.xml" }}
           paths:
             - ~/.m2/repository
 
@@ -1775,7 +1775,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - job-build-artifacts-v1-mvn-dependencies-{{ checksum "~/project/pom.xml" }}
+            - job-build-artifacts-v1-mvn-dependencies-{{ checksum "~/projects/pom.xml" }}
             - job-build-artifacts-v1-mvn-dependencies
 
   save-sonar-analysis-job-caches:
@@ -1792,7 +1792,7 @@ commands:
       - save_cache:
           key: job-sonar-analysis-v1-scannerwork-{{ epoch }}
           paths:
-            - ~/project/.scannerwork
+            - ~/projects/.scannerwork
       - save_cache:
           key: job-sonar-analysis-v1-user-cache-{{ epoch }}
           paths:
@@ -1944,7 +1944,7 @@ executors:
 #       - run:
 #           name: Upload test status report to Slack
 #           command: |
-#               curl -F file=@/home/circleci/project/tests/results/test-status-report.png \
+#               curl -F file=@/home/circleci/projects/tests/results/test-status-report.png \
 #                    -F channels=playground \
 #                    -F title="${CIRCLE_PROJECT_REPONAME} TEST STATUS | ${CIRCLE_BRANCH}"  \
 #                    -H "Authorization: Bearer xoxp-701547379457-696494594291-710681511959-9c9a861be3770efdd4f8637a076bf8c8" \
@@ -2005,7 +2005,7 @@ executors:
 #                     --xunit junit-output.xml --xunitskipnoncritical \
 #                     -v CODE_COVERAGE:True \
 #                     -v JACOCO_LIB_PATH:/home/circleci/jacoco-0.8.2/lib \
-#                     -v COVERAGE_DIR:/home/circleci/project/application/target robot/
+#                     -v COVERAGE_DIR:/home/circleci/projects/application/target robot/
 
 # set-slack-build-status:
 #   description: Set status env at the end of a job based on success or failure.
@@ -2064,6 +2064,6 @@ executors:
 #               cd results
 #               robot -d trash --output NONE --log NONE --noncritical chill status_report.robot
 #       - store_test_results:
-#           path: ~/project/tests/results/
+#           path: ~/projects/tests/results/
 #       - store_artifacts:
-#           path: ~/project/tests/results/
+#           path: ~/projects/tests/results/
