@@ -37,7 +37,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - release
+                - /release\/.*/
                 - master
                 - /sync\/.*/
                 - /feature/sync\/.*/
@@ -47,7 +47,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - release
+                - /release\/.*/
                 - master
                 - /sync\/.*/
                 - /feature/sync\/.*/
