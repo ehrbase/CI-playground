@@ -59,10 +59,10 @@ workflows:
           filters:
             branches:
               ignore:
-                - release
-                - master
-                - /sync\/.*/
-                - /feature/sync\/.*/
+                # - release
+                # - master
+                # - /sync\/.*/
+                # - /feature/sync\/.*/
 
       # - COMPOSITION-tests-1:
       #     context: org-global
