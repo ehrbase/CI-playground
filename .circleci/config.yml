@@ -824,9 +824,12 @@ jobs:
   SECURITY-test:
     machine:
       image: ubuntu-1604:201903-01
+    # executor: ubuntu-1604
     steps:
       - checkout
       - install-and-configure-keycloak
+      - run: ls -la
+      - restore-packaged-ehrbase-jar
       - run-robot-tests-with-oauth:
           include-tags: "OAUTH"
           # test-suite-path: ""
@@ -947,11 +950,11 @@ commands:
     steps:
       - configure-python-version
       # - checkout
-      - restore-integration-tests-job-caches
+      # - restore-integration-tests-job-caches
       # - attach-target-folder
-      - restore-packaged-ehrbase-jar
       - install-python-requirements
       - install-java-11
+      - run: ls -la
       - run:
           name: EXECUTE ROBOT COMMAND
           no_output_timeout: 30m
@@ -1315,8 +1318,10 @@ commands:
  
   restore-packaged-ehrbase-jar:
     steps:
+      - run: ls -la
       - attach_workspace:
           at: /home/circleci/
+      - run: ls -la
 
 
   collect-ehrbase-unittest-results:
