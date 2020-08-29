@@ -494,12 +494,17 @@ workflows:
       ///                                                                 ///
       //////////////////////////////////////////////////////////////////////
     
-    when:
-      or:
-        - equal: [ /^(sync\/|master)$/, << pipeline.git.branch >> ]
-        - equal: [ feature/sync/*, << pipeline.git.branch >> ]
+    # when:
+    #   or:
+    #     - equal: [ /^(sync\/|master)$/, << pipeline.git.branch >> ]
+    #     - equal: [ feature/sync/*, << pipeline.git.branch >> ]
     jobs:
-      - pull build install sdk from sync-branch
+      - pull build install sdk from sync-branch:
+          filters:
+            branches:
+              only:
+                - /^sync/.*/
+                - /^feature/sync/.*/
       - build package ehrbase with locally installed sdk:
           requires:
             - pull build install sdk from sync-branch
