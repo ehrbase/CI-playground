@@ -459,29 +459,41 @@ workflows:
   # WORKFLOW 3/3
   synced-feature-check:
     description: |
+      WHAT THIS WORKFLOW DOES
+      =======================
+
+      CI kicks in after push (of sync/* branch) to ehrbase repo. It will
+      1. pull (from sync/123_example-issue), build, test (unit), install SDK (makes SDK available from ~/.m2)
+      2. build (using locally installed SDK), test (unit) and package ehrbase (.../target/.jar)
+      3. start ehrbase server (from previously packaged .jar)
+      4. run SDK's (java) integration tests
+      5. run EHRbase's (robot) integration tests
+      6. create robot test report
+
       HOW TO USE THIS WORKFLOW?
       =========================
 
-      1. create a branch "sync/[issue-id]_name branches" in
+      1. create TWO branches "sync/[issue-id]_name branches" respectively
 
         - ehrbase repo       --> i.e.    sync/123_example-issue
         - openehr_sdk repo   --> i.e.    sync/123_example-issue
 
       2. apply your code changes
       3. push to openehr_sdk repo (NO CI will be triggered)
-      4. push to ehrbase repo
+      4. push to ehrbase repo (CI will trigger this workflow)
+      5. create TWO PRs (one in ehrbase, one in openehr_sdk)
+      6. WARNING:
 
-
-      WHAT THIS WORKFLOW DOES
-      =======================
-
-      5. CI kicks in after push to ehrbase repo and will
-          - pull (from sync/123_example-issue), build, test (unit), install SDK (makes SDK available from ~/.m2)
-          - build (using locally installed SDK), test (unit) and package ehrbase (.../target/.jar)
-          - start ehrbase server (from previously packaged .jar)
-          - run SDK's (java) integration tests
-          - run EHRbase's (robot) integration tests
-          - create robot test report
+      ///////////////////////////////////////////////////////////////////////
+      ///                                                                 ///
+      ///  - make sure that both PRs are reviewed and ready to be merged  ///
+      ///    at the same time!                                            ///
+      ///  - make sure to sync both PRs w/ develop before merging!        ///
+      ///  - open each PR in it's own browser window                      ///
+      ///  - MERGE BOTH PRs AT THE SAME TIME!                             ///
+      ///                                                                 ///
+      //////////////////////////////////////////////////////////////////////
+    
     when:
       or:
         - contains: [ sync/*, << pipeline.git.branch >> ]
