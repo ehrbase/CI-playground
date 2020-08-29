@@ -246,6 +246,18 @@ workflows:
             - build-artifacts
             - run-unit-tests
             - dependency-check
+            - COMPOSITION-tests-1
+            - COMPOSITION-tests-2
+            - COMPOSITION-tests-3
+            - COMPOSITION-tests-4
+            - CONTRIBUTION-test
+            - DIRECTORY-test
+            - EHRSERVICE-test
+            - EHRSTATUS-test
+            - KNOWLEDGE-test
+            - QUERYSERVICE-test-1
+            - QUERYSERVICE-test-2
+            - SECURITY-test
           # filters:
           #   branches:
           #     ignore:
