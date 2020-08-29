@@ -56,201 +56,201 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-          filters:
-            branches:
-              ignore:
-                # - release
-                # - master
-                # - /sync\/.*/
-                # - /feature/sync\/.*/
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
+          #       - /sync\/.*/
+          #       - /feature/sync\/.*/
 
-      # - COMPOSITION-tests-1:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
-      #     # post-steps:
-      #     #   - provide-test-status-report-via-slack #
+      - COMPOSITION-tests-1:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
+          # post-steps:
+          #   - provide-test-status-report-via-slack #
 
-      # - COMPOSITION-tests-2:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - COMPOSITION-tests-2:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - COMPOSITION-tests-3:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - COMPOSITION-tests-3:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - COMPOSITION-tests-4:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - COMPOSITION-tests-4:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - CONTRIBUTION-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - CONTRIBUTION-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - DIRECTORY-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - DIRECTORY-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - EHRSERVICE-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - EHRSERVICE-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - EHRSTATUS-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - EHRSTATUS-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - KNOWLEDGE-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - KNOWLEDGE-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - QUERYSERVICE-test-1:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - QUERYSERVICE-test-1:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - QUERYSERVICE-test-2:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - run-SDK-integration-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - QUERYSERVICE-test-2:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            # - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
       
-      # - SECURITY-test:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - SECURITY-test:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - ROBOT-REPORT:
-      #     context: org-global
-      #     requires:
-      #       - COMPOSITION-tests-1
-      #       - COMPOSITION-tests-2
-      #       - COMPOSITION-tests-3
-      #       - COMPOSITION-tests-4
-      #       - CONTRIBUTION-test
-      #       - DIRECTORY-test
-      #       - EHRSERVICE-test
-      #       - EHRSTATUS-test
-      #       - KNOWLEDGE-test
-      #       - QUERYSERVICE-test-1
-      #       - QUERYSERVICE-test-2
-      #       - SECURITY-test
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - ROBOT-REPORT:
+          context: org-global
+          requires:
+            - COMPOSITION-tests-1
+            - COMPOSITION-tests-2
+            - COMPOSITION-tests-3
+            - COMPOSITION-tests-4
+            - CONTRIBUTION-test
+            - DIRECTORY-test
+            - EHRSERVICE-test
+            - EHRSTATUS-test
+            - KNOWLEDGE-test
+            - QUERYSERVICE-test-1
+            - QUERYSERVICE-test-2
+            - SECURITY-test
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - dependency-check:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - dependency-check:
+          context: org-global
+          requires:
+            - build-artifacts
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
-      # - sonar-analysis:
-      #     context: org-global
-      #     requires:
-      #       - build-artifacts
-      #       - run-unit-tests
-      #       - dependency-check
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - release
-      #           - master
+      - sonar-analysis:
+          context: org-global
+          requires:
+            - build-artifacts
+            - run-unit-tests
+            - dependency-check
+          # filters:
+          #   branches:
+          #     ignore:
+          #       - release
+          #       - master
 
 
 
@@ -270,10 +270,10 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - run-unit-tests:
           context: org-global
@@ -286,21 +286,21 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-1:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
           # post-steps:
           #   - provide-test-status-report-via-slack #
 
@@ -309,120 +309,120 @@ workflows:
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-3:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-4:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - CONTRIBUTION-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - DIRECTORY-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - EHRSERVICE-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - EHRSTATUS-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - KNOWLEDGE-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - QUERYSERVICE-test-1:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - QUERYSERVICE-test-2:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-            - run-SDK-integration-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          #   - run-SDK-integration-tests
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - SECURITY-test:
           context: org-global
           requires:
             - build-artifacts
             - run-unit-tests
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - ROBOT-REPORT:
           context: org-global
@@ -439,10 +439,10 @@ workflows:
             - QUERYSERVICE-test-1
             - QUERYSERVICE-test-2
             - SECURITY-test
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - sonar-analysis:
           context: org-global
@@ -450,10 +450,10 @@ workflows:
             - build-artifacts
             - run-unit-tests
             - dependency-check
-          filters:
-            branches:
-              only:
-                - /^(release\/v\d+\.\d+\.\d+|master)$/
+          # filters:
+          #   branches:
+          #     only:
+          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
 
 
