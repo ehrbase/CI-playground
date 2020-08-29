@@ -496,8 +496,8 @@ workflows:
     
     when:
       or:
-        - contains: [ sync/*, << pipeline.git.branch >> ]
-        - contains: [ feature/sync/*, << pipeline.git.branch >> ]
+        - equal: [ sync/*, << pipeline.git.branch >> ]
+        - equal: [ feature/sync/*, << pipeline.git.branch >> ]
     jobs:
       - pull build install sdk from sync-branch
       - build package ehrbase with locally installed sdk:
