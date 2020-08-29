@@ -496,7 +496,7 @@ workflows:
     
     when:
       or:
-        - equal: [ /^(sync\/v\d+\.\d+\.\d+|master)$/, << pipeline.git.branch >> ]
+        - equal: [ /^(sync\/|master)$/, << pipeline.git.branch >> ]
         - equal: [ feature/sync/*, << pipeline.git.branch >> ]
     jobs:
       - pull build install sdk from sync-branch
