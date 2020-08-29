@@ -476,98 +476,99 @@ workflows:
       =======================
 
       5. CI kicks in after push to ehrbase repo and will
-          - pull, build, test (unit), install SDK (makes SDK available from ~/.m2)
+          - pull (from sync/123_example-issue), build, test (unit), install SDK (makes SDK available from ~/.m2)
           - build (using locally installed SDK), test (unit) and package ehrbase (.../target/.jar)
           - start ehrbase server (from previously packaged .jar)
           - run SDK's (java) integration tests
           - run EHRbase's (robot) integration tests
+          - create robot test report
     when:
-      and:
+      or:
         - contains: [ sync/*, << pipeline.git.branch >> ]
     jobs:
       - pull build install sdk from sync-branch
       - build package ehrbase with locally installed sdk:
           requires:
             - pull build install sdk from sync-branch
-      - run java integration tests - sdk:
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - COMPOSITION-tests-1:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - COMPOSITION-tests-2:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - COMPOSITION-tests-3:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - COMPOSITION-tests-4:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - CONTRIBUTION-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - DIRECTORY-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - EHRSERVICE-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - EHRSTATUS-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - KNOWLEDGE-test:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
-      - QUERYSERVICE-test-1:
-          context: org-global
-          requires:
-            - pull build install sdk from sync-branch
-            - build package ehrbase with locally installed sdk
+      # - run java integration tests - sdk:
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - COMPOSITION-tests-1:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - COMPOSITION-tests-2:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - COMPOSITION-tests-3:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - COMPOSITION-tests-4:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - CONTRIBUTION-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - DIRECTORY-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - EHRSERVICE-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - EHRSTATUS-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - KNOWLEDGE-test:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
+      # - QUERYSERVICE-test-1:
+      #     context: org-global
+      #     requires:
+      #       - pull build install sdk from sync-branch
+      #       - build package ehrbase with locally installed sdk
       # - QUERYSERVICE-test-2:
       #     context: org-global
       #     requires:
       #       - pull build install sdk from sync-branch
       #       - build package ehrbase with locally installed sdk
-      # - SECURITY-test:
-      #     context: org-global
-      #     requires:
-      #       - pull build install sdk from sync-branch
-      #       - build package ehrbase with locally installed sdk
+      - SECURITY-test:
+          context: org-global
+          requires:
+            - pull build install sdk from sync-branch
+            - build package ehrbase with locally installed sdk
       - ROBOT-TEST-REPORT:
           context: org-global
           requires:
-            - COMPOSITION-tests-1
-            - COMPOSITION-tests-2
-            - COMPOSITION-tests-3
-            - COMPOSITION-tests-4
-            - CONTRIBUTION-test
-            - DIRECTORY-test
-            - EHRSERVICE-test
-            - EHRSTATUS-test
-            - KNOWLEDGE-test
-            - QUERYSERVICE-test-1
+            # - COMPOSITION-tests-1
+            # - COMPOSITION-tests-2
+            # - COMPOSITION-tests-3
+            # - COMPOSITION-tests-4
+            # - CONTRIBUTION-test
+            # - DIRECTORY-test
+            # - EHRSERVICE-test
+            # - EHRSTATUS-test
+            # - KNOWLEDGE-test
+            # - QUERYSERVICE-test-1
             # - QUERYSERVICE-test-2
-            # - SECURITY-test
+            - SECURITY-test
 
 
 
@@ -947,7 +948,8 @@ commands:
       - configure-python-version
       # - checkout
       - restore-integration-tests-job-caches
-      - attach-target-folder
+      # - attach-target-folder
+      - restore-packaged-ehrbase-jar
       - install-python-requirements
       - install-java-11
       - run:
