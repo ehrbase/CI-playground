@@ -735,9 +735,9 @@ commands:
                   --flattenkeywords name:_resources.* \
                   --outputdir results/<< parameters.test-suite-name >> \
                   --name << parameters.test-suite-name >> \
-                  #
-                  # NOTE: next line makes sure that robot does not start ehrbase
-                  #
+                  # \
+                  # NOTE: next line makes sure that robot does not start ehrbase \
+                  # \
                   -v nodocker \                        
                   robot/<< parameters.test-suite-path >>/
       # - cache-in-python-requirements
