@@ -68,7 +68,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -82,7 +82,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -94,7 +94,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -106,7 +106,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -118,7 +118,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -130,7 +130,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -142,7 +142,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -154,7 +154,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -166,7 +166,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -178,7 +178,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -190,7 +190,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
             # - run-SDK-integration-tests
           # filters:
           #   branches:
@@ -202,7 +202,7 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            - run-unit-tests
+            # - run-unit-tests
           # filters:
           #   branches:
           #     ignore:
@@ -661,6 +661,7 @@ jobs:
           # - configure-python-version
           # - install-java-11
       - checkout
+      - install-maven
       - restore-build-artifacts-job-caches
           # - setup-database
       - maven-package
