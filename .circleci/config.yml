@@ -735,7 +735,7 @@ commands:
                   --flattenkeywords name:_resources.* \
                   --outputdir results/<< parameters.test-suite-name >> \
                   --name << parameters.test-suite-name >> \
-                  -v nodocker            
+                  -v nodocker \
                   robot/<< parameters.test-suite-path >>/
       # - cache-in-python-requirements
       - save-test-results-folder
