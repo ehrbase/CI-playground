@@ -810,9 +810,7 @@ jobs:
           test-suite-name: "ADHOC-QUERY-2"
   
   SECURITY-test:
-    machine:
-      image: ubuntu-1604:201903-01
-    # executor: ubuntu-1604
+    executor: machine-ubuntu-2004
     steps:
       - checkout
       - install-and-configure-keycloak
@@ -942,8 +940,8 @@ commands:
       # - checkout
       # - restore-integration-tests-job-caches
       # - attach-target-folder
-      - install-python-requirements
-      - install-java-11
+      - install-python3-requirements
+      # - install-java-11
       - run: pwd
       - run: ls -la
       - run: cd .. && ls -la
@@ -1456,8 +1454,8 @@ commands:
       - run:
           name: Install Python requirements
           command: |
-            python -c "import site; print(site.getsitepackages())"
-            pip install -r ~/projects/tests/requirements.txt
+            python3 -c "import site; print(site.getsitepackages())"
+            pip3 install -r ~/projects/tests/requirements.txt
 
   setup-database:
     description: Setup ehrbase database
