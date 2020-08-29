@@ -3,7 +3,7 @@
 ## Project setup
 
 ### Prerequisites
-Docker installed.
+Docker installed!
 
 ### Build
 ```
