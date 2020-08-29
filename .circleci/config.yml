@@ -51,30 +51,21 @@ workflows:
                 - master
                 - /sync\/.*/
                 - /feature/sync\/.*/
-
+      
       - run-SDK-integration-tests:
           context: org-global
           requires:
             - build-artifacts
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
-          #       - /sync\/.*/
-          #       - /feature/sync\/.*/
+        
+      - dependency-check:
+          context: org-global
+          requires:
+            - build-artifacts
 
       - COMPOSITION-tests-1:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
           # post-steps:
           #   - provide-test-status-report-via-slack #
 
@@ -82,132 +73,56 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - COMPOSITION-tests-3:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - COMPOSITION-tests-4:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - CONTRIBUTION-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - DIRECTORY-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - EHRSERVICE-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - EHRSTATUS-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - KNOWLEDGE-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - QUERYSERVICE-test-1:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - QUERYSERVICE-test-2:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-            # - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
       
       - SECURITY-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - ROBOT-TEST-REPORT:
           context: org-global
@@ -224,21 +139,6 @@ workflows:
             - QUERYSERVICE-test-1
             - QUERYSERVICE-test-2
             - SECURITY-test
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
-
-      - dependency-check:
-          context: org-global
-          requires:
-            - build-artifacts
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
       - sonar-analysis:
           context: org-global
@@ -258,11 +158,6 @@ workflows:
             - QUERYSERVICE-test-1
             - QUERYSERVICE-test-2
             - SECURITY-test
-          # filters:
-          #   branches:
-          #     ignore:
-          #       - release
-          #       - master
 
 
 
@@ -282,10 +177,6 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - run-unit-tests:
           context: org-global
@@ -298,21 +189,11 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-1:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
           # post-steps:
           #   - provide-test-status-report-via-slack #
 
@@ -320,121 +201,56 @@ workflows:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-3:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - COMPOSITION-tests-4:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - CONTRIBUTION-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - DIRECTORY-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - EHRSERVICE-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - EHRSTATUS-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - KNOWLEDGE-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - QUERYSERVICE-test-1:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - QUERYSERVICE-test-2:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          #   - run-SDK-integration-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - SECURITY-test:
           context: org-global
           requires:
             - build-artifacts
-            # - run-unit-tests
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - ROBOT-TEST-REPORT:
           context: org-global
@@ -451,10 +267,6 @@ workflows:
             - QUERYSERVICE-test-1
             - QUERYSERVICE-test-2
             - SECURITY-test
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
       - sonar-analysis:
           context: org-global
@@ -474,10 +286,6 @@ workflows:
             - QUERYSERVICE-test-1
             - QUERYSERVICE-test-2
             - SECURITY-test
-          # filters:
-          #   branches:
-          #     only:
-          #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
 
 
@@ -523,8 +331,9 @@ workflows:
     
     # when:
     #   or:
-    #     - equal: [ /^(sync\/|master)$/, << pipeline.git.branch >> ]
+    #     - equal: [ sync/*, << pipeline.git.branch >> ]
     #     - equal: [ feature/sync/*, << pipeline.git.branch >> ]
+
     jobs:
       - pull build install sdk from sync-branch:
           filters:
@@ -639,7 +448,6 @@ jobs:
     executor: docker-py3-java11-postgres
     steps:
       - checkout
-      # - setup-database    # required for machin executor
       - install-maven
       - restore-local-sdk-installation
       - cache-out-ehrbase-m2-dependencies-syncbranch
@@ -655,7 +463,6 @@ jobs:
     executor: docker-py3-java11-postgres
     steps:
       - checkout
-      # - setup-database    # required for machin executor
       - install-maven
       - restore-local-sdk-installation
       - restore-packaged-ehrbase-jar
@@ -666,32 +473,20 @@ jobs:
 
 
   build-artifacts:
-    # machine:
-    #   image: circleci/classic:201808-01
     executor: docker-py3-java11-postgres
     steps:
-          # - configure-python-version
-          # - install-java-11
       - checkout
       - install-maven
       - restore-build-artifacts-job-caches
-          # - setup-database
       - maven-package
-          # - persist-target-folder
       - save-packaged-ehrbase-jar
       - save-build-artifacts-job-caches
 
   dependency-check:
-    # machine:
-    #   image: circleci/classic:201808-01
     executor: docker-python3-java11
     steps:
-          # - configure-python-version
-          # - install-java-11
       - checkout
       - install-maven
-          # - attach_workspace:
-          #     at: /home/circleci
       - restore-packaged-ehrbase-jar
       - restore-dependency-check-job-caches
       - run-dependency-check
@@ -699,19 +494,12 @@ jobs:
       - save-dependency-check-job-caches
 
   run-unit-tests:
-    # machine:
-    #   image: circleci/classic:201808-01
     executor: docker-py3-java11-postgres
     steps:
-          # - configure-python-version
-          # - install-java-11
       - checkout
       - install-maven
-          # - attach_workspace:
-          #     at: /home/circleci
       - restore-packaged-ehrbase-jar
       - restore-unit-tests-job-caches
-          # - setup-database
       - maven-test
       - save-unit-tests-job-caches
       - persist-unit-test-coverage
@@ -729,17 +517,6 @@ jobs:
       - collect-sdk-unittest-results
       - collect-sdk-integrationtest-results
       - save-skd-test-results
-
-  dCOMPOSITION-tests-1:
-    executor: docker-py3-java11-postgres
-    steps:
-      - checkout
-      - restore-packaged-ehrbase-jar
-      - start-ehrbase-server
-      - run-robot-tests-in-docker:
-          include-tags: "compositionANDjson1"
-          test-suite-path: "COMPOSITION_TESTS"
-          test-suite-name: "COMPOSITION_1"
   
   COMPOSITION-tests-1:
     executor: docker-py3-java11-postgres
@@ -879,16 +656,6 @@ jobs:
       - restore-test-results-folder
       - merge-robot-outputs
 
-      # ROBOT-REPORT:
-      #   machine:
-      #     image: ubuntu-1604:201903-01
-      #   steps:
-      #     - configure-python-version
-      #     - checkout
-      #     - restore-integration-tests-job-caches
-      #     - attach-tests-folder
-      #     - merge-robot-outputs
-
   sonar-analysis:
     machine:
       image: circleci/classic:201808-01
@@ -930,47 +697,47 @@ commands:
   #   88           `"YbbdP"'   8Y"Ybbd8"'    `"YbbdP"'    "Y888          "Y888  `"Ybbd8"'  `"YbbdP"'    "Y888  `"YbbdP"'
   #
 
-  run-robot-tests-old:
-    description: Run integration tests written in Robot Framework
-    parameters:
-      include-tags:
-        description: Which tests to inclue by TAGs (Robot syntax applies!)
-        type: string
-      test-suite-path:
-        description: Target test-suite given by it's folder name e.g. COMPOSITION_TESTS
-        type: string
-      test-suite-name:
-        description: Titel of generated Robot Log/Report.html
-        type: string
-    steps:
-      - configure-python-version
-      - checkout
-      - restore-integration-tests-job-caches
-      - attach-target-folder
-      - install-python-requirements
-      - install-java-11
-      - run:
-          name: EXECUTE ROBOT COMMAND
-          no_output_timeout: 30m
-          command: |
-            cd tests
-            robot --include << parameters.include-tags >> \
-                  --exclude TODO -e future -e obsolete -e libtest \
-                  --console dotted \
-                  --loglevel TRACE \
-                  --noncritical not-ready \
-                  --flattenkeywords for \
-                  --flattenkeywords foritem \
-                  --flattenkeywords name:_resources.* \
-                  --outputdir results/<< parameters.test-suite-name >> \
-                  --name << parameters.test-suite-name >> \
-                  robot/<< parameters.test-suite-path >>/
-      - save-integration-tests-job-caches
-      - persist-tests-folder
-      - store_test_results:
-          path: ~/projects/tests/results/
-      - store_artifacts:
-          path: ~/projects/tests/results/
+  # run-robot-tests-old:
+  #   description: Run integration tests written in Robot Framework
+  #   parameters:
+  #     include-tags:
+  #       description: Which tests to inclue by TAGs (Robot syntax applies!)
+  #       type: string
+  #     test-suite-path:
+  #       description: Target test-suite given by it's folder name e.g. COMPOSITION_TESTS
+  #       type: string
+  #     test-suite-name:
+  #       description: Titel of generated Robot Log/Report.html
+  #       type: string
+  #   steps:
+  #     - configure-python-version
+  #     - checkout
+  #     - restore-integration-tests-job-caches
+  #     - attach-target-folder
+  #     - install-python-requirements
+  #     - install-java-11
+  #     - run:
+  #         name: EXECUTE ROBOT COMMAND
+  #         no_output_timeout: 30m
+  #         command: |
+  #           cd tests
+  #           robot --include << parameters.include-tags >> \
+  #                 --exclude TODO -e future -e obsolete -e libtest \
+  #                 --console dotted \
+  #                 --loglevel TRACE \
+  #                 --noncritical not-ready \
+  #                 --flattenkeywords for \
+  #                 --flattenkeywords foritem \
+  #                 --flattenkeywords name:_resources.* \
+  #                 --outputdir results/<< parameters.test-suite-name >> \
+  #                 --name << parameters.test-suite-name >> \
+  #                 robot/<< parameters.test-suite-path >>/
+  #     - save-integration-tests-job-caches
+  #     - persist-tests-folder
+  #     - store_test_results:
+  #         path: ~/projects/tests/results/
+  #     - store_artifacts:
+  #         path: ~/projects/tests/results/
 
 
   run-robot-tests-with-oauth:
