@@ -496,7 +496,7 @@ workflows:
     
     when:
       or:
-        - equal: [ sync/*, << pipeline.git.branch >> ]
+        - equal: [ sync/foo, << pipeline.git.branch >> ]
         - equal: [ feature/sync/*, << pipeline.git.branch >> ]
     jobs:
       - pull build install sdk from sync-branch
@@ -634,16 +634,18 @@ jobs:
 
 
   build-artifacts:
-    machine:
-      image: circleci/classic:201808-01
+    # machine:
+    #   image: circleci/classic:201808-01
+    executor: docker-py3-java11-postgres
     steps:
-      - configure-python-version
-      - install-java-11
+          # - configure-python-version
+          # - install-java-11
       - checkout
       - restore-build-artifacts-job-caches
-      - setup-database
+          # - setup-database
       - maven-package
-      - persist-target-folder
+          # - persist-target-folder
+      - save-packaged-ehrbase-jar
       - save-build-artifacts-job-caches
 
   dependency-check:
