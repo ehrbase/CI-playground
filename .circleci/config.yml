@@ -209,7 +209,7 @@ workflows:
           #       - release
           #       - master
 
-      - ROBOT-REPORT:
+      - ROBOT-TEST-REPORT:
           context: org-global
           requires:
             - COMPOSITION-tests-1
@@ -436,7 +436,7 @@ workflows:
           #     only:
           #       - /^(release\/v\d+\.\d+\.\d+|master)$/
 
-      - ROBOT-REPORT:
+      - ROBOT-TEST-REPORT:
           context: org-global
           requires:
             - COMPOSITION-tests-1
@@ -462,6 +462,18 @@ workflows:
             - build-artifacts
             - run-unit-tests
             - dependency-check
+            - COMPOSITION-tests-1
+            - COMPOSITION-tests-2
+            - COMPOSITION-tests-3
+            - COMPOSITION-tests-4
+            - CONTRIBUTION-test
+            - DIRECTORY-test
+            - EHRSERVICE-test
+            - EHRSTATUS-test
+            - KNOWLEDGE-test
+            - QUERYSERVICE-test-1
+            - QUERYSERVICE-test-2
+            - SECURITY-test
           # filters:
           #   branches:
           #     only:
@@ -670,30 +682,36 @@ jobs:
       - save-build-artifacts-job-caches
 
   dependency-check:
-    machine:
-      image: circleci/classic:201808-01
+    # machine:
+    #   image: circleci/classic:201808-01
+    executor: docker-py3-java11-postgres
     steps:
-      - configure-python-version
-      - install-java-11
+          # - configure-python-version
+          # - install-java-11
       - checkout
-      - attach_workspace:
-          at: /home/circleci
+      - install-maven
+          # - attach_workspace:
+          #     at: /home/circleci
+      - restore-packaged-ehrbase-jar
       - restore-dependency-check-job-caches
       - run-dependency-check
       - persist-dependency-check-results
       - save-dependency-check-job-caches
 
   run-unit-tests:
-    machine:
-      image: circleci/classic:201808-01
+    # machine:
+    #   image: circleci/classic:201808-01
+    executor: docker-py3-java11-postgres
     steps:
-      - configure-python-version
-      - install-java-11
+          # - configure-python-version
+          # - install-java-11
       - checkout
-      - attach_workspace:
-          at: /home/circleci
+      - install-maven
+          # - attach_workspace:
+          #     at: /home/circleci
+      - restore-packaged-ehrbase-jar
       - restore-unit-tests-job-caches
-      - setup-database
+          # - setup-database
       - maven-test
       - save-unit-tests-job-caches
       - persist-unit-test-coverage
@@ -861,15 +879,15 @@ jobs:
       - restore-test-results-folder
       - merge-robot-outputs
 
-  ROBOT-REPORT:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - configure-python-version
-      - checkout
-      - restore-integration-tests-job-caches
-      - attach-tests-folder
-      - merge-robot-outputs
+      # ROBOT-REPORT:
+      #   machine:
+      #     image: ubuntu-1604:201903-01
+      #   steps:
+      #     - configure-python-version
+      #     - checkout
+      #     - restore-integration-tests-job-caches
+      #     - attach-tests-folder
+      #     - merge-robot-outputs
 
   sonar-analysis:
     machine:
