@@ -40,6 +40,7 @@ workflows:
                 - release
                 - master
                 - /sync\/.*/
+                - /feature/sync\/.*/
 
       - run-unit-tests:
           context: org-global
@@ -49,6 +50,7 @@ workflows:
                 - release
                 - master
                 - /sync\/.*/
+                - /feature/sync\/.*/
 
       - run-SDK-integration-tests:
           context: org-global
@@ -60,6 +62,7 @@ workflows:
                 - release
                 - master
                 - /sync\/.*/
+                - /feature/sync\/.*/
 
       # - COMPOSITION-tests-1:
       #     context: org-global
@@ -503,8 +506,8 @@ workflows:
           filters:
             branches:
               only:
-                - /^sync/.*/
-                - /^feature/sync/.*/
+                - /^sync\/.*/
+                - /^feature\/sync\/.*/
       - build package ehrbase with locally installed sdk:
           requires:
             - pull build install sdk from sync-branch
