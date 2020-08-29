@@ -493,10 +493,10 @@ workflows:
       # - run java integration tests - sdk:
       #     requires:
       #       - build package ehrbase with locally installed sdk
-      - COMPOSITION-tests-1:
-          context: org-global
-          requires:
-            - build package ehrbase with locally installed sdk
+      # - COMPOSITION-tests-1:
+      #     context: org-global
+      #     requires:
+      #       - build package ehrbase with locally installed sdk
       # - COMPOSITION-tests-2:
       #     context: org-global
       #     requires:
@@ -581,12 +581,12 @@ jobs:
       - install-maven
       - git-clone-sdk-repo
       - git-checkout-sdk-sync-branch
-      # - cache-out-sdk-m2-dependencies-sync-branch
+      - cache-out-sdk-m2-dependencies-sync-branch
       - maven-install-sdk
-      # - cache-in-sdk-m2-dependencies-sync-branch
+      - cache-in-sdk-m2-dependencies-sync-branch
       - save-local-sdk-installation
-      # - collect-sdk-unittest-results
-      # - save-skd-test-results
+      - collect-sdk-unittest-results
+      - save-skd-test-results
 
 
   build package ehrbase with locally installed sdk:
@@ -597,13 +597,12 @@ jobs:
       # - setup-database    # required for machin executor
       - install-maven
       - restore-local-sdk-installation
-      # - cache-out-ehrbase-m2-dependencies-syncbranch
+      - cache-out-ehrbase-m2-dependencies-syncbranch
       - build-and-test-ehrbase
-      # - cache-in-ehrbase-m2-dependencies-syncbranch
+      - cache-in-ehrbase-m2-dependencies-syncbranch
       - save-packaged-ehrbase-jar
-      - run: pwd
-      # - collect-ehrbase-unittest-results
-      # - save-ehrbase-test-results
+      - collect-ehrbase-unittest-results
+      - save-ehrbase-test-results
 
 
   run java integration tests - sdk:
@@ -814,9 +813,6 @@ jobs:
     steps:
       - checkout
       - install-and-configure-keycloak
-      - run: pwd
-      - run: ls -la
-      - run: cd .. && ls -la
       - restore-packaged-ehrbase-jar
       - run-robot-tests-with-oauth:
           include-tags: "OAUTH"
@@ -936,15 +932,8 @@ commands:
         description: Titel of generated Robot Log/Report.html
         type: string
     steps:
-      # - configure-python-version
-      # - checkout
-      # - restore-integration-tests-job-caches
-      # - attach-target-folder
+      - restore-integration-tests-job-caches
       - install-python3-requirements
-      # - install-java-11
-      - run: pwd
-      - run: ls -la
-      - run: cd .. && ls -la
       - run:
           name: EXECUTE ROBOT COMMAND
           no_output_timeout: 30m
@@ -963,11 +952,11 @@ commands:
                   --name << parameters.test-suite-name >> \
                   robot/
       - save-integration-tests-job-caches
-      - persist-tests-folder
+      - save-test-results-folder
       - store_test_results:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
       - store_artifacts:
-          path: ~/project/tests/results/
+          path: ~/projects/tests/results/
 
 
   # USE THIS COMMAND W/ DOCKER EXECUTOR ONLY!!! 
@@ -1308,10 +1297,8 @@ commands:
  
   restore-packaged-ehrbase-jar:
     steps:
-      - run: ls -la
       - attach_workspace:
           at: /home/circleci/
-      - run: ls -la
 
 
   collect-ehrbase-unittest-results:
