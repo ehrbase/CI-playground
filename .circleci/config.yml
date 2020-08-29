@@ -1670,8 +1670,8 @@ commands:
       - run:
           name: Convert vulnerability analysis to sonar issues
           command: |
-            pyenv global 3.7.0
-            python ~/projects/.circleci/convert_vulnerability_analysis.py \
+            # pyenv global 3.7.0
+            python3 ~/projects/.circleci/convert_vulnerability_analysis.py \
                 ~/projects/vulnerability_analysis.json \
                 ~/projects/sonar_issues.json \
                 application/src/main/java/org/ehrbase/application/EhrBase.java
