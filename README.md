@@ -1,3 +1,8 @@
+# TEST GITHUB PULL APP
+https://wei.github.io/pull/
+
+
+
 # EHRbase
 
 EHRbase is an [openEHR](openehr.org) Clinical Data Repository, providing a standard-based backend for interoperable clinical applications. It implements the latest version of the openEHR Reference Model (RM 1.0.4) and version 1.4 of the Archetype Definition Language (ADL). Applications can use the capabilities of EHRbase through the latest version of the [openEHR REST API](https://specifications.openehr.org/releases/ITS-REST/latest/) and model-based queries using the [Archetype Query Language](https://specifications.openehr.org/releases/QUERY/latest/AQL.html).
@@ -128,15 +133,15 @@ To run the built container image use the following command:
 
 Adopt the parameters by your needs. The following parameters for `-e` must be set to start the EHRbase container:
 
-| Parameter   | Usage                                                    | Example                                   |
-| ----------- | -------------------------------------------------------- | ----------------------------------------- |
-| DB_URL      | Database URL. Must point to the running database server. | jdbc:postgresql://ehrdb:5432/ehrbase      |
-| DB_USER     | Database user configured for the ehr schema.             | ehrbase                                   |
-| DB_PASS     | Password for the database user                           | ehrbase                                   |
-| AUTH_TYPE   | Set HTTP security method                                 | BASIC                                      |
-| AUTH_USER   | Username for Basic Auth                                  | myuser                                    |
-| AUTH_PASSWORD | Password for Basic Auth                                | myPassword432                             |
-| SYSTEM_NAME | Name for the local system                                | local.ehrbase.org                         |
+| Parameter     | Usage                                                    | Example                              |
+| ------------- | -------------------------------------------------------- | ------------------------------------ |
+| DB_URL        | Database URL. Must point to the running database server. | jdbc:postgresql://ehrdb:5432/ehrbase |
+| DB_USER       | Database user configured for the ehr schema.             | ehrbase                              |
+| DB_PASS       | Password for the database user                           | ehrbase                              |
+| AUTH_TYPE     | Set HTTP security method                                 | BASIC                                |
+| AUTH_USER     | Username for Basic Auth                                  | myuser                               |
+| AUTH_PASSWORD | Password for Basic Auth                                  | myPassword432                        |
+| SYSTEM_NAME   | Name for the local system                                | local.ehrbase.org                    |
 
 ### Pre-build Docker Image
 
