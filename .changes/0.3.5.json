@@ -1,6 +1,0 @@
-[
-  {
-    "description": "openEHR SDK containing the contents of EHRbase serialization, response DTOs, terminology and validation",
-    "type": "patch"
-  }
-]
